@@ -1,0 +1,22 @@
+{% extends 'base_profile.html.twig' %}
+
+{% block contenuText %}
+    Déclarer une
+{% endblock %}
+
+{% block contenuTextLinear %}
+    nouvelle activité
+{% endblock %}
+
+{% block title %}
+    Profil : création d'activité
+{% endblock %}
+
+{% block body %}
+    <div>
+        sélectionner l'activité parmis celle proposer ci-dessou :
+    </div>
+    <div>
+        {{ component('BusinessPageForm')}}
+    </div>
+{% endblock %}

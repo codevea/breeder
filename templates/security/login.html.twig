@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block htmlClass %}
+    htmlPublic
+{% endblock %}
+
+{% block bodyClass %}
+    bodyPublic
+{% endblock %}
+
+{% block headerClass %}
+    headerPublic
+{% endblock %}
+
+{% block footerClass %}
+    footerPublic
+{% endblock %}
+
+{% block title %}
+    Connexion des utilisateurs professionnels.
+{% endblock %}
+
+{% block body %}
+    <div>
+        <div>
+            <h2>Connexion</h2>
+            <br>
+            <form method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <div class="formColumn">
+                    <label for="username">Email</label>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                </div>
+
+                <div class="formColumn">
+                    <label for="password">Mot De Passe</label>
+                    <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                </div>
+
+                <div class="formColumn">
+                    <a href="{{ path('app_forgot_password_request') }}">Mot De Passe Oublié ?</a>
+                </div>
+
+                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+                <div class="checkbox">
+                    <label for="_remember_me">Se souvenir de moi</label>
+                    <input type="checkbox" name="_remember_me" id="_remember_me">
+                </div>
+
+                <button type="submit">
+                    Connexion
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

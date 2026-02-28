@@ -1,0 +1,59 @@
+button,
+a.button {
+    cursor          : pointer;
+    font-size       : 16px;
+    font-family     : inherit;
+    border          : none;
+    border-radius   : 3px;
+    padding         : 0.5rem 0.8rem;
+    width           : 100%;
+    text-transform  : uppercase;
+    margin          : 0 auto;
+    text-align      : center;
+    white-space     : nowrap;
+    display         : inline-flex;
+    flex-direction  : row;
+    justify-content : center;
+    align-items     : center;
+    align-content   : center;
+    gap             : 1rem;
+    box-shadow      : var(--shadow-black);
+    transition      : background-color 1.5s ease, transform 1.5s ease;
+    border-radius   : 3px;
+    background-color: var(--white);
+    color           : var(--black);
+    border          : 2px solid var(--bluePastel);
+}
+
+.buttonRemove,
+.buttonDelete {
+    width        : auto;
+    height       : auto;
+    border       : 1px solid rgb(229, 184, 184);
+    margin       :0 auto;
+    padding      : 0.5rem;
+    border-radius: 3px;
+    color        : var(--black);
+    cursor       : pointer;
+}
+
+.buttonRemove:hover,
+.buttonDelete:hover {
+    background-color: rgb(229, 184, 184);
+    transform       : scale(1.01);
+    color        : var(--black);
+}
+
+.buttonAdd {
+    background-color: var(--white);
+    width           : auto;
+    color           : var(--green);
+    margin          : 0.5rem 0;
+}
+
+button:hover,
+a.button:hover {
+    background-color: var(--blueCiel);
+    color           : var(--white);
+    transform       : scale(1.01);
+}

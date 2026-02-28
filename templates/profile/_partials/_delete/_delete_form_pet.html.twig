@@ -1,0 +1,10 @@
+<form method="post"
+      action="{{ path('app_profile_roleBreederVerified_pet_delete', {'id': pet.id}) }}"
+      onsubmit="return confirm('⚠️ Êtes-vous sûr(e) de vouloir supprimer votre animal de votre cheptel ? Toutes les données que vous avez renseignées seront définitivement supprimées de la plateforme et ne pourront plus être récupérées.');">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pet.id) }}">
+
+    <button class="buttonRemove">
+        supprimer {{ pet.name }} {{ ux_icon('material-symbols:delete-outline-rounded', {width:'20px', height:'20px'}) }}
+    </button>
+</form>

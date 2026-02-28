@@ -1,0 +1,14 @@
+{% extends 'base_profile.html.twig' %}
+
+{% block title %}
+    édition de votre profil utilisateur
+{% endblock %}
+
+{% block body %}
+    <h2>Votre profil</h2>
+    <div>
+        {{user.firstName}}
+        {{user.lastName}}
+        {% include "profile/_partials/_delete/_delete_form_profile.html.twig" %}
+    </div>
+{% endblock %}

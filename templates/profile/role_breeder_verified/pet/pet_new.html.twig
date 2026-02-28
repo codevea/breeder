@@ -1,0 +1,18 @@
+{% extends 'base_profile.html.twig' %}
+{% block contenuTitle %}
+    Ajouter une
+    {% if breeder.raceDog %}
+        {{breeder.raceDog}}
+    {% endif %}
+    {% if breeder.raceCat %}
+        {{breeder.raceCat}}
+    {% endif %}
+    <br>à mon cheptel
+    {% endblock %}
+    {% block title %}
+        Cheptel
+    {% endblock %}
+
+    {% block body %}
+        {{form(formPet)}}
+    {% endblock %}

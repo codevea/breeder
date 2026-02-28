@@ -1,0 +1,20 @@
+
+{% extends 'base_profile.html.twig' %}
+{% block title %}
+    Cheptel
+{% endblock %}
+
+{% block contenuText %} {{pet.name}}
+{% endblock %}
+
+{% block contenuTextLinear %} {{pet.affixe}}
+{% endblock %}
+
+{% block body %}
+
+    {# {{form(formCheptel)}} #}
+
+        <div>
+            {% include "profile/_partials/_delete/_delete_form_pet.html.twig" %}
+        </div>
+{% endblock %}

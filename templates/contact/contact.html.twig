@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block bodyClass %}
+    bodyPublic
+{% endblock %}
+{% block htmlClass %}
+    htmlPublic
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block title %}
+    Contact
+{% endblock %}
+
+{% block body %}
+    <h2>contact</h2>
+
+    <div class="containerForm">
+
+        {{form_start(formContact)}}
+
+        <div class="sectionFlexRow">
+            {{ form_row(formContact.name) }}
+            {{ form_row(formContact.email) }}
+        </div>
+
+        {{ form_row(formContact.content) }}
+
+        {{ form_row(formContact.agreeTerms) }}
+
+        {{ form_row(formContact.submit) }}
+        {{form_end(formContact)}}
+    </div>
+
+{% endblock %}

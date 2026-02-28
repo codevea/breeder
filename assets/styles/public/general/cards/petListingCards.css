@@ -1,0 +1,102 @@
+/* https://codepen.io/pugson/pen/mdMrgvg */
+/* card annonces */
+
+.sectionCard {
+  display              : grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  place-items          : center;
+  height               : auto;
+  padding              : 1rem;
+  margin               : 0 auto;
+  gap                  : 1rem;
+}
+
+.box {
+  border-radius        : 20px;
+  display              : grid;
+  grid-template-columns: 64px 1fr;
+  position             : relative;
+}
+
+.boxFemale {
+  background-color: var(--pinkPastel);
+}
+
+.boxMale {
+  background-color: var(--bluePastel);
+}
+
+.box-icon {
+  display    : grid;
+  place-items: center;
+}
+
+.box-label {
+  height      : 64px;
+  display     : flex;
+  align-items : center;
+  padding-left: 16px;
+}
+
+.box-title {
+  white-space     : nowrap;
+  display         : flex;
+  align-items     : center;
+  writing-mode    : vertical-rl;
+  text-orientation: mixed;
+  padding-top     : 16px;
+}
+
+.box-image {
+  width        : 300px;
+  height       : 300px;
+  border-radius: 18px 0 18px 0;
+  overflow     : hidden;
+
+  img {
+    width  : 100%;
+    display: block;
+  }
+}
+
+.studio-button {
+  position       : absolute;
+  bottom         : 16px;
+  right          : 16px;
+  padding        : 0.5rem;
+  border-radius  : 3px;
+  transition     : 0.35s ease all;
+  overflow       : hidden;
+  max-width      : 36px;
+  display        : flex;
+  flex-direction : row;
+  justify-content: space-between;
+  align-content  : stretch;
+  align-items    : stretch;
+}
+
+.studio-button-icon {
+  position: relative;
+  top     : 1px;
+}
+
+.studio-button-label {
+  text-transform: uppercase;
+  white-space   : nowrap;
+  padding       : 0 8px;
+  opacity       : 0;
+  transform     : translateX(10px);
+  transition    : 0.25s ease all;
+}
+
+.box:hover {
+  .studio-button {
+    max-width: 100%;
+  }
+
+  .studio-button-label {
+    opacity   : 1;
+    transform : translateX(0);
+    transition: 0.25s 0.1s ease-in opacity, 0.15s 0.1s cubic-bezier(.175, .885, .32, 1.275) transform;
+  }
+}

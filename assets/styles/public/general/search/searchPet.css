@@ -1,0 +1,42 @@
+.sectionSearch {
+    width          : 100%;
+    margin         : 0 auto;
+    padding        : 5rem 1rem;
+    height         : auto;
+    display        : flex;
+    justify-content: space-between;
+    align-content  : stretch;
+    align-items    : stretch;
+
+    >div {
+        width     : 50%;
+        height    : auto;
+        text-align: center;
+    }
+}
+
+.selectPet {
+    width         : 100%;
+    margin        : 0 auto;
+    padding       : 3rem 1rem;
+    text-transform: uppercase;
+}
+
+.selectPet ul {
+    display        : flex;
+    flex-direction : row;
+    justify-content: center;
+    align-content  : stretch;
+    align-items    : stretch;
+    flex-wrap      : nowrap;
+    gap            : 1rem;
+    border-bottom  : 1px solid var(--sterling);
+    width          : fit-content;
+    padding        : 1rem;
+    margin         : 0 auto;
+
+    li {
+        list-style-type: none;
+        text-transform : uppercase;
+    }
+}

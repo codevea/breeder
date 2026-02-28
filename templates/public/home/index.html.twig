@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block htmlClass %}
+    htmlPublic
+{% endblock %}
+
+{% block bodyClass %}
+    bodyPublic
+{% endblock %}
+
+{% block headerClass %}
+    headerPublic
+{% endblock %}
+
+{% block footerClass %}
+    footerPublic
+{% endblock %}
+
+{% block title %}
+    Hello HomeController!
+{% endblock %}
+
+{% block body %}
+    {% include 'public/_partials/_cardAnnonce.html.twig' %}
+
+    <div class="sectionSearch">
+        <div>
+            <h2>Découvrez les chiots et chatons proposer par des éleveurs déclarée.</h2>
+            <br>
+
+            <form action="" method="post">
+                <h3>Recherche avancer</h3>
+                <br>
+                <div class="formColumn">
+                    <select>
+                        <option>épeces</option>
+                        <option value="option1">chiens</option>
+                        <option value="option2">chats</option>
+                    </select>
+                    <select>
+                        <option>Race</option>
+                        <option value="option1">Persan</option>
+                    </select>
+                    <select>
+                        <option>Region</option>
+                        <option value="option1">Var</option>
+                    </select>
+                </div>
+
+                <button type="submit">rechercher {{ ux_icon('mingcute:search-line', {width:"20px", height:"20px"}) }}
+                </button>
+            </form>
+        </div>
+
+        <div class="sectionSearchMapRegion">
+            {% include 'svg/carte.svg' %}
+        </div>
+    </div>
+
+
+    <div class="sectionBreeder">
+        <h2>Les dernier éleveurs inscrits</h2>
+        {% include 'public/_partials/_cardBreeder.html.twig' %}
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+<nav class="navOne">
+<div class="navOneLogo">
+    <div>
+        <a href="{{path('app_home')}}"><img src="{{asset('pictures/logo.webp')}}"></a>
+    </div>
+    <div>
+        <strong>éleveurs</strong>
+        <p>de race</p>
+    </div>
+</div>
+
+<div>
+    <ul class="navOneLinks">
+        <li>
+            <a href="#" class="{{ app.current_route == 'app_home' ? 'active' : '' }}">Chiens</a>
+        </li>
+        <li>
+            <a href="#">Chats</a>
+        </li>
+        <li>
+            <a href="#">éleveurs</a>
+        </li>
+    </ul>
+</div>
+
+<div class="navOneUser">
+    {% if app.user and is_granted('ROLE_USER') %}
+        
+        <a class="button" href="{{ path('app_profile_index') }}">Administration</a>
+        
+        <form method="post" action="{{ path('app_logout') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+            <button type="submit" class="buttonDelete">{{ ux_icon('hugeicons:logout-circle-01', {width:'25px', height:'25px'} ) }}</button>
+        </form>
+
+    {% else %}
+
+        <a class="button" href="{{ path('app_login') }}">Connexion</a>
+        <a class="button" href="{{ path('app_register') }}">Inscription pro</a>
+
+    {% endif %}
+</div>
+
+</nav>

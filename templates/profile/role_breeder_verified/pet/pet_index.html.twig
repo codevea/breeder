@@ -1,0 +1,57 @@
+{% extends 'base_profile.html.twig' %}
+
+{% block contenuText %}
+    Gestion de mon cheptel
+{% endblock %}
+
+{% block contenuTextLinear %}
+    {% if breeder.raceDog %}
+        {{breeder.raceDog}}
+    {% endif %}
+    {% if breeder.raceCat %}
+        {{breeder.raceCat}}
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    Gerez mon cheptel
+{% endblock %}
+
+{% block body %}
+
+    <div>
+        <h2>Gerez mon cheptel</h2>
+
+<div class="containerSection">
+        <div class="conteneurTable">
+            <div class="ligneTable enteteTable">
+                <div>Genre</div>
+                <div>Nom</div>
+                <div>Affixe</div>
+                <div>I-Cad</div>
+                <div></div>
+            </div>
+
+            {% for pet in pets %}
+                <div class="ligneTable">
+                    <div>{{pet.petGender}}</div>
+                    <div>{{pet.name}}</div>
+                    <div>{{pet.affixe}}</div>
+                    <div>{{pet.icad.number}}</div>
+                    <div><a class="button" href="{{path('app_profile_roleBreederVerified_pet_edit', {'id':pet.id})}}">Modifier</a></div>
+                </div>
+            {% endfor %}
+        </div>
+        </div>
+
+        <div>
+            <a href="{{path('app_profile_roleBreederVerified_pet_new', {'slug':breeder.slug})}}">Ajouter un{% if breeder.raceDog %} chien {% endif %}{% if breeder.raceCat %} chat {% endif %}à mon élevage</a>
+        </div>
+    </div>
+
+    <div class="contenuCardProfile">
+        <div class="cardProfile">
+            <h2>Annoncer une naissance</h2>
+        </div>
+    </div>
+{% endblock %}

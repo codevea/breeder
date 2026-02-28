@@ -1,0 +1,48 @@
+<div {{ attributes }}>
+
+    {{ form_start(form) }}
+    {% if form_errors(form)  %}
+        <div class="error">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <div>
+        <div class="contenuCardProfile">
+            {% for child in form.activity %}
+                <div class="cardProfile">
+                    <div class="choiceSelectDesignButton">
+                        {{ form_widget(child) }}
+                        {{ form_label(child) }}
+
+                        {# Si éleveur canin ce SVG s'affiche #}
+                        {# {{ ux_icon('fluent:animal-dog-20-regular', {width:'32px', height:'32px'}) }} #}
+                        {# sinon Si :'activité est éleveur Félin ce SVG s'affiche #}
+                        {# {{ ux_icon('fluent:animal-cat-20-regular', {width:'32px', height:'32px'}) }} #}
+                    </div>
+                </div>
+            {% endfor %} 
+        </div>
+
+        {% if form.activity is defined and form.addSiret is not defined %}
+            <div id="placeholder" class="formPlaceholder">
+                {{ ux_icon('solar:cursor-square-bold-duotone', {width:'48px', height:'48px'}) }}
+                <p>En attente de votre sélection ci-dessus</p>
+            </div>
+        {% endif %}
+
+    </div>
+    {% if form.addSiret is defined %}
+        {{ form_row(form.addSiret) }}
+    {% endif %}
+    {% if form.siret is defined %}
+        {{ form_row(form.siret) }}
+    {% endif %}
+    {% if form.address is defined %}
+        {{ form_row(form.address) }}
+    {% endif %}
+    {% if form.submit is defined %}
+        {{ form_row(form.submit) }}
+    {% endif %}
+    {{ form_end(form) }}
+</div>

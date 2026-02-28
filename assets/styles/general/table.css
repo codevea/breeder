@@ -1,0 +1,43 @@
+.conteneurTable {
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-between;
+    align-items    : stretch;
+    align-content  : start;
+    margin         : 1rem auto;
+    gap            : 1rem;
+    padding        : 0;
+    height         : auto;
+    width          : 90%;
+
+    .ligneTable {
+        border-bottom : 1px solid var(--bluePastel);
+        display       : flex;
+        flex-direction: row;
+        flex-wrap     : nowrap;
+        justify-items : space-between;
+        align-items   : center;
+        align-content : stretch;
+        padding       : 0.5rem 1rem;
+        margin        : 0 auto;
+        height        : auto;
+        gap           : 1rem;
+        width         : 100%;
+
+        >div {
+            padding        : 0;
+            margin         : 0 auto;
+            display        : flex;
+            flex-direction : row;
+            justify-content: start;
+            align-content  : start;
+            align-items    : center;
+            width          : 20%;
+            gap            : 1rem
+        }
+    }
+
+    .enteteTable {
+        font-weight: 600;
+    }
+}

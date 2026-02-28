@@ -1,0 +1,27 @@
+.containerSection {
+    margin : 0 auto;
+    padding: 3rem 0;
+    width  : 100%;
+}
+
+.containerDuo {
+    display        : flex;
+    flex-direction : row;
+    justify-content: stretch;
+    align-items    : stretch;
+    flex-wrap      : nowrap;
+    justify-content: stretch;
+    gap            : 1rem;
+    width          : 100%;
+    margin         : 0;
+    padding: 0;
+
+    >div {
+        padding: 3rem 2rem;
+        width  : 50%;
+        margin : 0;
+        border: 2px dashed var(--bluePastel);
+        border-radius: 5px;
+        box-shadow: var(--shadow-black);
+    }
+}

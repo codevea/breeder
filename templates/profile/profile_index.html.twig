@@ -1,0 +1,29 @@
+{% extends 'base_profile.html.twig' %}
+
+{% block title %}
+    Mon profil
+{% endblock %}
+
+{% block body %}
+    <div class="containerSection">
+        <div class="contenuCardProfile">
+            {% for business in businessPages %}
+                <div class="cardProfile">
+                    <h2>{{business.activity.name}}</h2>
+                    <a href="{{ path('app_profile_business_page_index', {'id': business.id })}}">Gerez votre activité</a>
+                </div>
+            {% endfor %}
+            <div class="cardProfile">
+                
+            </div>
+        </div>
+    </div>
+    <div class="containerSection">
+        <div class="containerDuo">
+            <div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,138 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+
+use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BusinessPageRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[ORM\Entity(repositoryClass: BusinessPageRepository::class)]
+#[UniqueEntity(fields: ['activity', 'user'],  message: 'Vous avez déjà sélectionné cette activité.')]
+#[UniqueEntity(fields: ['address'], message: ' Vous avez déjà déclaré cette adresse précédemment lors de la déclaration d’activité. Veuillez la sélectionner parmi celles qui sont déjà enregistrées. ')]
+#[Assert\Cascade]
+class BusinessPage
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'businessPage')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'businessPages', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false, unique: true)]
+    private ?Address $address = null;
+
+    #[ORM\ManyToOne(inversedBy: 'businessPages', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Siret $siret = null;
+
+    /**
+     * @var Collection<int, Breeder>
+     */
+    #[ORM\OneToMany(targetEntity: Breeder::class, mappedBy: 'businessPage', cascade: ['remove'])]
+    private Collection $breeders;
+
+    #[ORM\ManyToOne(inversedBy: 'businessPages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Activity $activity = null;
+
+
+    public function __construct()
+    {
+        $this->breeders = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getSiret(): ?Siret
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?Siret $siret): static
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Breeder>
+     */
+    public function getBreeders(): Collection
+    {
+        return $this->breeders;
+    }
+
+    public function addBreeder(Breeder $breeder): static
+    {
+        if (!$this->breeders->contains($breeder)) {
+            $this->breeders->add($breeder);
+            $breeder->setBusinessPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBreeder(Breeder $breeder): static
+    {
+        if ($this->breeders->removeElement($breeder)) {
+            // set the owning side to null (unless already changed)
+            if ($breeder->getBusinessPage() === $this) {
+                $breeder->setBusinessPage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getActivity(): ?Activity
+    {
+        return $this->activity;
+    }
+
+    public function setActivity(?Activity $activity): static
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+}

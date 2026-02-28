@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block htmlClass %}
+    htmlPublic
+{% endblock %}
+
+{% block bodyClass %}
+    bodyPublic
+{% endblock %}
+
+{% block headerClass %}
+    headerPublic
+{% endblock %}
+
+{% block footerClass %}
+    footerPublic
+{% endblock %}
+
+{% block title %}
+    Inscription
+{% endblock %}
+
+{% block body %}
+
+    <div class="sectionForm">
+        <div>
+            <h2>Inscription éleveur</h2>
+            <br>
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+
+            {% if form_errors(registrationForm)  %}
+                <div class="formErrors">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
+            {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword) }}
+            {{ form_row(registrationForm.gender) }}
+            {{ form_row(registrationForm.lastName) }}
+            {{ form_row(registrationForm.firstName) }}
+            {{ form_row(registrationForm.siren) }}
+            {{ form_row(registrationForm.businessPage) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_row(registrationForm.submit) }}
+            {{ form_end(registrationForm) }}
+        </div>
+        <div>
+            <strong>Inscription éleveur canin et félin
+                </strong><br>
+                Inscriver vous et deposer vos annonces et créer vos pages et présenter votre élevage  gratuitements
+                </div>
+
+            </div>
+
+        {% endblock %}

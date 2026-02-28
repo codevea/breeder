@@ -1,0 +1,39 @@
+/* -- SETTING -- */
+@import url('settings/reset.css');
+@import url('settings/root.css');
+@import url('settings/structure.css');
+
+@import url('settings/_partials/_footer.css');
+@import url('settings/_partials/_navone.css');
+
+
+/* -- PUBLIC -- */
+@import url('public/_partials/_footer.css');
+@import url('public/_partials/_header.css');
+
+@import url('public/general/cards/breederCards.css');
+@import url('public/general/cards/petListingCards.css');
+@import url('public/general/form/form.css');
+@import url('public/general/search/searchPet.css');
+
+@import url('public/structure/structure.css');
+
+@import url('public/svg/carteRegion.css');
+
+/* -- PROFILE -- */
+@import url('profile/dashboard.css');
+@import url('profile/structure/structure.css');
+@import url('profile/general/form/form.css');
+
+/* -- GENERAL -- */
+@import url('general/button.css');
+@import url('general/flash.css');
+@import url('general/links.css');
+@import url('general/title.css');
+@import url('general/animal.css');
+@import url('general/container.css');
+@import url('general/table.css');
+
+@import url('general/form/form.css');
+
+/* -- FONTS -- */

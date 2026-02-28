@@ -1,0 +1,134 @@
+{% extends 'base_profile.html.twig' %}
+
+{% block contenuText %}
+    Activité professionnel
+{% endblock %}
+
+{% block contenuTextLinear %}
+    {{businessPage.activity}}
+{% endblock %}
+
+{% block title %}
+    Profil : édition d'activité d'
+    {{businessPage.activity}}
+{% endblock %}
+
+{% block body %}
+    <div class="containerSection">
+        <div class="containerDuo">
+            <div>
+                <h2>Informations</h2><br>
+                <strong>Nom :</strong>
+                {{businessPage.user.firstName}}
+                <br>
+                <strong>Prénom :</strong>
+                {{businessPage.user.lastName}}
+                <br><br>
+                    <strong>SIRET :</strong>
+                    {{businessPage.siret}}
+                </div>
+                <div>
+                    <strong> Adresse :</strong>
+                    {{businessPage.address.street}}
+                    <br>
+                    {{businessPage.address.zipCode}}
+                    {{businessPage.address.city}}
+                    <br><br>
+                        <strong>Tel fixe :</strong> 02000000<br>
+                        <strong>Portable :</strong> 06000000<br><br>
+                        <strong>Site web :</strong> lesitepinpin<br>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="containerSection">
+                <div> {% if businessPage.activity.slug == 'eleveur-de-chat' %}
+                    <h2>Gerez mes élevage</h2>
+                    <div class="conteneurTable">
+                        {% for breeder in businessPage.breeders %}
+                            {% if breeder.raceCat is not null %}
+                                <div class="ligneTable">
+                                    <div class="icon">
+                                        {{ ux_icon('fluent:animal-cat-20-regular', {width:'18px'}) }}
+                                        {{ breeder.raceCat }}
+                                    </div>
+                                    <div>
+                                        {{ breeder.affixe.name }}
+                                    </div>
+                                    <div>
+                                        LOOF c458215
+                                    </div>
+                                    <div>
+                                        {% include "profile/_partials/_delete/_delete_form_breeder_race.html.twig" %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if businessPage.activity.slug == 'eleveur-de-chien' %}
+                    <h2>Gerez mes élevage</h2>
+                    <div class="conteneurTable">
+                        {% for breeder in businessPage.breeders %}
+                            {% if breeder.raceDog is not null %}
+                                <div class="ligneTable">
+                                    <div class="icon">
+                                        {{ ux_icon('fluent:animal-dog-20-regular', { width:'18px' })}}
+                                        {{ breeder.raceDog }}
+                                    </div>
+                                    <div>
+                                        {{ breeder.affixe.name }}
+                                    </div>
+                                    <div>
+                                        {% include "profile/_partials/_delete/_delete_form_breeder_race.html.twig" %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="containerSection">
+                <div class="containerDuo">
+                    <div>
+                        {% set isCat = businessPage.activity.slug == 'eleveur-de-chat' %}
+                        {% set isDog = businessPage.activity.slug == 'eleveur-de-chien' %}
+
+                        {% if isCat %}
+                            {# Compter les races de chat déjà associées #}
+                            {% set totalRaceCats = businessPage.breeders|filter(b => b.raceCat is not null)|length %}
+                            {# Si toutes les races ne sont pas encore prises #}
+                            {% if totalRaceCats < globalsRaceCatsFindAll|length %}
+                                <h2>Ajouter une race de chat à mon activité</h2>
+                                {{ component('BreederForm', {
+                                initialFormData: breeder,
+                                form: formBreeder
+                                }) }}
+                            {% endif %}
+                        {% endif %}
+
+                        {% if isDog %}
+                            {# Compter les races de chien déjà associées #}
+                            {% set totalRaceDogs = businessPage.breeders|filter(b => b.raceDog is not null)|length %}
+                            {# Si toutes les races ne sont pas encore prises #}
+                            {% if totalRaceDogs < globalsRaceDogsFindAll|length %}
+                                <h2>Ajouter une race de chien à mon activité</h2>
+                                {{ component('BreederForm', {
+                                initialFormData: breeder,
+                                form: formBreeder
+                                }) }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div>
+                    </div>
+                </div>
+
+                <div class="containerSection">
+                    {% include "profile/_partials/_delete/_delete_form_business_page.html.twig" %}
+                </div>
+                {% endblock %}

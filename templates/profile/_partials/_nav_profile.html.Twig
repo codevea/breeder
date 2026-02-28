@@ -1,0 +1,55 @@
+<div>
+    <ul>
+        <li><a href="{{ path('app_profile_edit', {'id': app.user.id}) }}">Mon profil</a></li>
+    </ul>
+</div>
+
+<div>
+    <strong>Gerez de mes activités</strong>
+    <ul>
+        {% for business in businessPages %}
+            <li><a href="{{ path('app_profile_business_page_index', {'id': business.id}) }}">{{ ux_icon('bi:house-gear', {width:'18px'}) }} {{ business.activity }}</a></li>
+
+            {% set totalActivity = 0 %}
+            {% for business in businessPages %}
+                {% if business.activity is not null and business.activity.name is not empty %}
+                    {% set totalActivity = totalActivity + 1 %}
+                {% endif %}
+            {% endfor %}
+            {% if totalActivity < globalsActvityFindAll|length %}
+                <li><a href="{{ path('app_profile_business_page_new') }}">{{ ux_icon('bi:house-add', {width:'18px'}) }} Ajouter une activité</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if businessPages is empty %}
+            <li><a href="{{ path('app_profile_business_page_new') }}">{{ ux_icon('bi:house-add', {width:'18px'}) }} Ajouter une activité</a></li>
+        {% endif %}
+    </ul>
+    <br>
+    {% for business in businessPages %}
+        {% if business.activity.slug == 'eleveur-de-chat' %}
+            <strong>Gestion cheptel félin</strong><br>
+            <ul>
+                {% for breeder in business.breeders %}
+                    {% if breeder.raceCat %}
+                        <li><a href="{{path('app_profile_roleBreederVerified_pet_index', {'slug': breeder.slug})}}">{{ ux_icon('fluent:animal-cat-24-regular', {width:'18px'}) }} {{breeder.raceCat.race}}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+<br>
+    {% for business in businessPages %}
+        {% if business.activity.slug == 'eleveur-de-chien' %}
+            <strong>Gestion cheptel canin</strong><br>
+            <ul>
+                {% for breeder in business.breeders %}
+                    {% if breeder.raceDog %}
+                        <li><a href="{{path('app_profile_roleBreederVerified_pet_index', {'slug': breeder.slug})}}">{{ ux_icon('fluent:animal-dog-24-regular', {width:'18px'}) }} {{ breeder.raceDog.race }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+
+</div>

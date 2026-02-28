@@ -1,0 +1,12 @@
+.htmlProfile {
+     background-color: #2E3136;
+}
+
+.bodyProfile {
+    background-color: #fcfdfe;
+    color           : var(--black);
+}
+
+.bodyProfile article{
+    padding  : 5rem 1rem;
+}

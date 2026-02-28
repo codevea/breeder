@@ -1,0 +1,112 @@
+.containerDashboardProfile {
+    background-color: #fcfdfe;
+    display         : flex;
+    flex-direction  : row;
+    justify-content : space-between;
+    align-content   : stretch;
+    gap             : 1rem;
+    align-items     : stretch;
+    min-height      : 100vh;
+    width           : 100%;
+    margin          : 0 auto;
+    padding         : 0;
+
+    .contenuLeftProfile {
+        width          : 20%;
+        padding        : 5rem 1rem;
+        display        : flex;
+        flex-direction : column;
+        justify-content: start;
+        align-items    : stretch;
+        align-content  : stretch;
+        gap            : 1rem;
+        margin         : 0 auto;
+
+        li {
+            list-style: none;
+        }
+    }
+
+    .contenuRightProfile {
+        width          : 80%;
+        margin         : 0;
+        padding        : 5rem 1rem;
+        display        : flex;
+        flex-direction : column;
+        justify-content: space-between;
+        align-items    : stretch;
+        align-content  : stretch;
+        gap            : 1rem;
+
+        .contenuCardProfile {
+            display        : flex;
+            flex-direction : row;
+            justify-content: space-between;
+            align-items    : stretch;
+            align-content  : stretch;
+            flex-wrap      : wrap;
+            gap            : 1rem;
+            margin         : 0 auto;
+            padding        : 1rem;
+            width          : 100%;
+        }
+
+        .cardProfile {
+            padding         : 1rem;
+            width           : 40%;
+            border-radius   : 3px;
+            margin          : 0 auto;
+            background-color: var(-white);
+        }
+
+        .conteneurHeaderProfile {
+            margin    : 0 auto;
+            padding   : 1rem;
+            text-align: center;
+
+            .textBold {
+                font-size  : 3rem;
+                font-weight: 800;
+            }
+
+            .textLinear {
+                color: #445775;
+                background: linear-gradient(90deg, #244170 0%, #8aaadf 50%, #445775 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+    }
+}
+
+/* Palette de couleurs neutres & raffinées */
+/* :root {
+    --bg-dashboard: #f8fafc; 
+    --text-dark: #0f172a; 
+    --border-soft: #e2e8f0;
+    --shadow-elegant: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+} */
+
+/* .cardProfile {
+    background: var(--bg-white);
+    box-shadow: var(--shadow-elegant);
+    padding: 2.5rem;
+    width: calc(50% - 1rem); 
+    border-radius: 1.25rem;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cardProfile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.08);
+} */
+
+/* Éléments de titre Twig adaptés */
+/* .cardProfile h3 {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.025em;
+} */

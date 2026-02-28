@@ -1,0 +1,32 @@
+:root {
+  --quartz    : #ffeef9;
+  --opal      : #f8fbfe;
+  --tournaline: #ebffec;
+  --aquamarine: #d1e1ff;
+  --citrine   : #f0d8a8;
+  --egg       : #F0EAD6;
+  --amethyste : #f8e8ff;
+  --white     : #ffffff;
+  --ardoise   : #2c2d30;
+  --black     : #000000;
+  --grey      : #e8e8e8;
+
+
+  --pink     : #ff00cc;
+  --blue     : #00aaff;
+  --red      : #bd5d5d;
+  --blueJeans: #536589;
+  --blueCiel : #556fa3;
+  --yellow   : #b77a00;
+  --green    : #5d9d61;
+
+  --greenPastel: #D8E8C4;
+  --pinkPastel : #F5BEBB;
+  --bluePastel : #B8C6DB;
+  --lilasPastel: #F0D5E6;
+
+  --shadow-black: rgba(0, 0, 0, 0.059) 0px 3px 3px 0px;
+
+  --linear-white         : linear-gradient(90deg, rgb(249, 253, 255) 0%, rgba(255, 255, 255, 1) 100%);
+  --linear-blue-amethyste: linear-gradient(90deg, rgb(237, 253, 255) 0%, rgba(252, 240, 255, 1) 100%);
+}

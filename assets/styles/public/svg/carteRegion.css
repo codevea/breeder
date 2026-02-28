@@ -1,0 +1,24 @@
+.sectionSearchMapRegion {
+    display        : flex;
+    flex-direction : row;
+    flex-wrap      : nowrap;
+    margin         : 0 auto;
+    padding        : 1rem;
+    justify-content: stretch;
+    align-items    : center;
+
+    svg {
+        width: 100%;
+    }
+}
+
+.sectionSearchMapRegion path {
+    fill        : var(--aquamarine);
+    stroke      : var(--white);
+    stroke-width: 1px;
+    transition  : 0.5s;
+}
+
+.sectionSearchMapRegion path:hover {
+    fill: var(--citrine);
+}
