@@ -22,6 +22,21 @@ form {
     margin         : 0 auto;
 }
 
+.formColumn ul {
+    display         : block;
+    background-color: #e5f4fc;
+    border          : 1px solid #d2e4ec;
+    color           : #117ba4;
+    border-radius   : 5px;
+    width           : 100%;
+    padding         : 1rem;
+    margin          : 1rem auto;
+
+    li {
+        list-style: none;
+    }
+}
+
 input,
 select {
     border          : none;
@@ -37,11 +52,11 @@ select {
 }
 
 label {
-    width         : 100%;
-    height        : auto;
-    padding       : 0;
-    margin        : 0.3rem auto;
-    text-align    : left;
+    width     : 100%;
+    height    : auto;
+    padding   : 0;
+    margin    : 0.3rem auto;
+    text-align: left;
 }
 
 .checkbox {
@@ -144,7 +159,7 @@ input[type="checkbox"] {
     border          : 2px solid var(--bluePastel);
     box-shadow      : var(--shadow-black);
     color           : var(--ardoise);
-    text-align: center;
+    text-align      : center;
     gap             : 1rem;
     padding         : 1rem;
     margin          : 0 auto;
@@ -155,4 +170,30 @@ input[type="checkbox"] {
 .choiceSelectDesignButton:hover {
     background-color: var(--bluePastel);
     transform       : scale(1.01);
+}
+
+.collectionLive {
+    display        : flex;
+    flex-direction : row;
+    flex-wrap      : nowrap;
+    justify-content: space-between;
+    align-items    : center;
+    align-content  : stretch;
+    gap            : 2rem;
+    margin         : 0 auto;
+    width          : 100%;
+    padding        :2rem 0;
+
+    >div {
+        margin         : 0 auto;
+        width          : 35%;
+        display        : flex;
+        flex-direction : row;
+        flex-wrap      : nowrap;
+        justify-content: start;
+        align-items    : center;
+        align-content  : stretch;
+        gap            : 1rem;
+        margin         : 0 auto;
+    }
 }

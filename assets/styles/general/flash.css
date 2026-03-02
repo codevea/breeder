@@ -1,40 +1,38 @@
+.success,
+.info,
+.warning,
+.error {
+  border-radius: 5px;
+  width        : 95%;
+  padding      : 1rem;
+  margin       : 2rem auto;
+
+  ul li {
+    list-style: none;
+  }
+}
+
 .success {
-  background-color: #f1fcf6;
-  width           : 95%;
+  background-color: #e5faee;
   border          : 1px solid #d9ece2;
-  border-radius   : 5px;
-  padding         : 1rem;
-  margin          : 2rem auto;
   color           : #075f30;
 }
 
 .info {
-  background-color: #f0faff;
+  background-color: #e5f4fc;
   border          : 1px solid #d2e4ec;
-  border-radius   : 5px;
-  width           : 95%;
-  padding         : 1rem;
-  margin          : 2rem auto;
   color           : #117ba4;
 }
 
 .warning {
-  background-color: #fffaef;
+  background-color: #fdf5e4;
   border          : 1px solid #f3ebdb;
-  border-radius   : 5px;
-  width           : 95%;
-  padding         : 1rem;
-  margin          : 2rem auto;
   color           : #8c6001;
 }
 
 .error {
   background-color: #ffefef;
   border          : 1px solid #f3dbdb;
-  border-radius   : 5px;
-  width           : 95%;
-  padding         : 1rem;
-  margin          : 2rem auto;
   color           : #8c0101;
 }
 
@@ -44,8 +42,7 @@
   .info,
   .warning,
   .error {
-
-    width: 100%;
+    width        : 100%;
     border-radius: 0px;
   }
 }

@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Throwable;
 
 #[Route(path: '/profil', name: 'app_profile_business_page_')]
 final class BusinessPageController extends AbstractController
@@ -72,95 +73,115 @@ final class BusinessPageController extends AbstractController
         ]);
     }
 
+
     #[Route('/edition-activite/{id}', name: 'index', methods: [Request::METHOD_POST, Request::METHOD_GET])]
     #[IsGranted('ROLE_USER')]
-    public function index(BusinessPageRepository $businessPageRepository, BusinessPage $businessPage, Request $request, EntityManagerInterface $em, AffixeRepository $affixeRepository,): Response {
-
-        /** @var User|null $user */
-        $user = $this->getUser();
-        $businessPages = $businessPageRepository->findBy(['user' => $user]);
-
-        $breeder = new Breeder();
-        $breeder->setBusinessPage($businessPage);
-
-        $slug = $businessPage->getActivity()->getSlug();
-
-        // Déterminer le type d’éleveur (chat ou chien)
-        $type = $slug === 'eleveur-de-chat' ? 'cat' : 'dog';
-
-        // Formulaire unique
-        $form = $this->createForm(BreederFormType::class, $breeder, [
-            'breeder_type' => $type,
-            'validation_groups' => [$type === 'cat' ? 'eleveur-de-chat' : 'eleveur-de-chien'],
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // Vérifie si un affixe identique existe déjà à la création
-            $affixe = $breeder->getAffixe();
-
-            if ($affixe && $affixe->getId() === null) {
-
-                $existingAffixe = $affixeRepository->findOneBy([
-                    'name' => $affixe->getName(), // ou autre champ unique selon ton entité Affixe
-                ]);
-
-                if ($existingAffixe) {
-                    $this->addFlash('warning', 'Cet affixe existe déjà. Veuillez en choisir un autre ou le sélectionner dans la liste.');
-                    return $this->redirectToRoute('app_profile_business_page_index', [
-                        'id' => $businessPage->getId()
-                    ]);
-                }
-            }
-
-            $criteria = [
-                $type === 'cat' ? 'raceCat' : 'raceDog' => $type === 'cat'
-                    ? $breeder->getRaceCat()
-                    : $breeder->getRaceDog(),
-                'businessPage' => $businessPage,
-            ];
-
-            $exists = $em->getRepository(Breeder::class)->findOneBy($criteria);
-
-            if ($exists) {
-                $this->addFlash(
-                    'warning',
-                    $type === 'cat'
-                        ? 'Cette race de chat est déjà liée à votre élevage.'
-                        : 'Cette race de chien est déjà liée à votre élevage.'
-                );
-
-                return $this->redirectToRoute('app_profile_business_page_index', [
-                    'id' => $businessPage->getId()
-                ]);
-            }
-
-            // Enregistrement
-            $em->persist($breeder);
-            $em->flush();
-
-            $this->addFlash(
-                'success',
-                $type === 'cat'
-                    ? 'La race de chat que vous élevez a bien été ajoutée et associée à l\'affixe.'
-                    : 'La race de chien que vous élevez a bien été ajoutée et associée à l\'affixe.'
-            );
-
-            return $this->redirectToRoute('app_profile_business_page_index', [
-                'id' => $businessPage->getId()
-            ]);
-        }
-
+    public function index(
+        BusinessPageRepository $businessPageRepository,
+        BusinessPage $businessPage
+    ): Response {
+    
         return $this->render('profile/business_page/business_page_index.html.twig', [
-            'user' => $user,
+            'user' => $this->getUser(),
             'businessPage' => $businessPage,
-            'businessPages' => $businessPages,
-            'breeder' => $breeder,
-            'formBreeder' => $form,
+            'businessPages' => $businessPageRepository->findBy(['user' => $this->getUser()]),
         ]);
     }
+
+    // #[Route('/edition-activite/{id}', name: 'index', methods: [Request::METHOD_POST, Request::METHOD_GET])]
+    // #[IsGranted('ROLE_USER')]
+    // public function index(
+    //     BusinessPageRepository $businessPageRepository,
+    //     BusinessPage $businessPage,
+    //     // Request $request,
+    //     // EntityManagerInterface $em,
+    // ): Response {
+
+    //     /** @var User|null $user */
+    //     $user = $this->getUser();
+    //     $businessPages = $businessPageRepository->findBy(['user' => $user]);
+
+    // $breeder = (new Breeder())->setBusinessPage($businessPage);
+
+    // // Déterminer le type (chat / chien)
+    // $isCat = $businessPage->getActivity()->getSlug() === 'eleveur-de-chat';
+
+    // Formulaire unique
+    // $form = $this->createForm(BreederFormType::class, $breeder, [
+    //     'breeder_type' => $isCat ? 'cat' : 'dog',
+    //     'validation_groups' => [$isCat ? 'eleveur-de-chat' : 'eleveur-de-chien'],
+    // ]);
+    // $form->handleRequest($request);
+
+    // if ($form->isSubmitted() && $form->isValid()) {
+    // try {
+
+    // NE PAS EFFACER --------------------------------------------------
+    // --- Vérification affixe ---
+    // $affixe = $breeder->getAffixe();
+
+    // if ($affixe && $affixe->getId() === null) {
+    //     $existingAffixe = $affixeRepository->findOneBy([
+    //         'name' => $affixe->getName(),
+    //     ]);
+
+    //     if ($existingAffixe) {
+    //         $this->addFlash('warning', 'Cet affixe existe déjà. Veuillez en choisir un autre ou le sélectionner dans la liste.');
+    //         return $this->redirectToRoute('app_profile_business_page_index', [
+    //             'id' => $businessPage->getId()
+    //         ]);
+    //     }
+    // }
+
+    // NE PAS EFFACER --------------------------------------------------
+    // --- Vérification doublon race ---
+    // $raceField = $isCat ? 'raceCat' : 'raceDog';
+    // $raceValue = $isCat ? $breeder->getRaceCat() : $breeder->getRaceDog();
+    // $existingRaceBusinessPage = $em->getRepository(Breeder::class)->findOneBy([
+    //     $raceField => $raceValue,
+    //     'businessPage' => $businessPage,
+    // ]);
+    // if ($existingRaceBusinessPage) {
+    //     $this->addFlash(
+    //         'warning',
+    //         $isCat
+    //             ? 'Cette race de chat est déjà liée à votre élevage.'
+    //             : 'Cette race de chien est déjà liée à votre élevage.'
+    //     );
+    //     return $this->redirectToRoute('app_profile_business_page_index', [
+    //         'id' => $businessPage->getId()
+    //     ]);
+    // }
+    // -----------------------------------------------------------------
+
+    // --- Enregistrement ---
+    // $em->persist($breeder);
+    // $em->flush();
+
+    // $this->addFlash(
+    //     'success',
+    //     $isCat
+    //         ? 'La race de chat que vous élevez a bien été ajoutée et associée à l\'affixe.'
+    //         : 'La race de chien que vous élevez a bien été ajoutée et associée à l\'affixe.'
+    // );
+    // return $this->redirectToRoute('app_profile_business_page_index', [
+    //     'id' => $businessPage->getId()
+    // ]);
+    // } catch (Throwable $th) {
+
+    //     $this->addFlash('danger', 'Une erreur est survenue lors de l’enregistrement.');
+    //     return $this->redirectToRoute('app_profile_business_page_new');
+    // }
+    // }
+
+    //     return $this->render('profile/business_page/business_page_index.html.twig', [
+    //         'user' => $user,
+    //         'businessPage' => $businessPage,
+    //         'businessPages' => $businessPages,
+    //         // 'breeder' => $breeder,
+    //         // 'formBreeder' => $form,
+    //     ]);
+    // }
 
     #[Route(path: '/suppression-activite/{id}', name: 'delete', methods: ['POST'], requirements: ['id' => Requirement::DIGITS])]
     #[IsGranted('ROLE_USER')]

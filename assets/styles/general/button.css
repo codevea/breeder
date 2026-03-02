@@ -27,28 +27,46 @@ a.button {
 
 .buttonRemove,
 .buttonDelete {
-    width        : auto;
-    height       : auto;
-    border       : 1px solid rgb(229, 184, 184);
-    margin       :0 auto;
-    padding      : 0.5rem;
-    border-radius: 3px;
-    color        : var(--black);
-    cursor       : pointer;
+    width           : auto;
+    height          : auto;
+    background-color: transparent;
+    border          : none;
+    margin          : 0 auto;
+    padding         : 0.5rem;
+    color           : rgb(226, 142, 142);
+    box-shadow      : none;
+    cursor          : pointer;
+    text-transform  : none;
+    font-size       : 1.2rem;
 }
 
 .buttonRemove:hover,
 .buttonDelete:hover {
-    background-color: rgb(229, 184, 184);
+    background-color: transparent;
+    border          : none;
     transform       : scale(1.01);
-    color        : var(--black);
+    color           : rgb(206, 60, 60);
+    ;
 }
 
-.buttonAdd {
-    background-color: var(--white);
+button.buttonAddCollection {
     width           : auto;
-    color           : var(--green);
-    margin          : 0.5rem 0;
+    height          : auto;
+    background-color: transparent;
+    border          : none;
+    margin          : 2rem 0 4rem 0;
+    padding         : 0.5rem;
+    color           : var(--black);
+    box-shadow      : none;
+    cursor          : pointer;
+    text-transform  : none;
+    font-size       : 1.2rem;
+}
+
+button.buttonAddCollection:hover {
+    background-color: transparent;
+    border          : none;
+    color           : var(--black);
 }
 
 button:hover,

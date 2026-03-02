@@ -5,24 +5,27 @@
     align-items    : stretch;
     align-content  : start;
     margin         : 1rem auto;
-    gap            : 1rem;
     padding        : 0;
     height         : auto;
-    width          : 90%;
+    width          : 100%;
+    border: 1px solid var(--bluePastel);
+    border-radius: 10px;
+
 
     .ligneTable {
-        border-bottom : 1px solid var(--bluePastel);
+        border-top : 1px solid var(--bluePastel);
         display       : flex;
         flex-direction: row;
         flex-wrap     : nowrap;
         justify-items : space-between;
         align-items   : center;
         align-content : stretch;
-        padding       : 0.5rem 1rem;
+        padding       : 1rem;
         margin        : 0 auto;
         height        : auto;
         gap           : 1rem;
         width         : 100%;
+        
 
         >div {
             padding        : 0;
@@ -39,5 +42,8 @@
 
     .enteteTable {
         font-weight: 600;
+        background-color: var(--bluePastel);
+        border-radius: 10px 10px 0px 0px;
+        padding: 1rem;
     }
 }

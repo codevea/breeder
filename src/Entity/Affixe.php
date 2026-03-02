@@ -14,7 +14,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AffixeRepository::class)]
-#[UniqueEntity(fields: ['name'], message: "Cette affixe est déjà enregistrée dans la base de données.")]
+#[UniqueEntity(
+    fields: ['name'],
+    message: "Cet affixe existe déjà. Veuillez en choisir un autre ou le sélectionner dans la liste.",
+    groups: ['Default', 'eleveur-de-chat', 'eleveur-de-chien']
+)]
 #[UniqueEntity(fields: ['slug'], message: "Cette affixe est déjà enregistrée dans la base de données.")]
 class Affixe implements Stringable
 {
@@ -24,7 +28,7 @@ class Affixe implements Stringable
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\Unique(message: 'Cette affixe est déjà enregistrée dans la base de données.')]
+    // #[Assert\Unique(message: 'Cette affixe est déjà enregistrée dans la base de données.')]
     #[Assert\NotBlank(message: 'Vous devez saisir un nom d\'affixe')]
     private ?string $name = null;
 
@@ -40,8 +44,8 @@ class Affixe implements Stringable
     private Collection $breeders;
 
     #[ORM\ManyToOne(inversedBy: 'affixes')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull]
+    // #[ORM\JoinColumn(nullable: false)]
+    // #[Assert\NotNull]
     #[Assert\Valid]
     private ?AffixeRegistration $affixeRegistration = null;
 
@@ -57,6 +61,7 @@ class Affixe implements Stringable
         $this->breeders = new ArrayCollection();
         $this->pets = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -163,5 +168,4 @@ class Affixe implements Stringable
 
         return $this;
     }
-
 }

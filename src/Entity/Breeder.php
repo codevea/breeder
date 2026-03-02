@@ -15,12 +15,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: BreederRepository::class)]
 #[UniqueEntity(
     fields: ['raceCat', 'businessPage'],
-    message: 'Cette race de chat est déjà enregistrée parmi celles que vous élevez.',
+    message: 'Cette race de chat est déjà enregistrée...',
+    errorPath: 'raceCat', // <--- erreur liée au champ raceCat
     groups: ['eleveur-de-chat']
 )]
 #[UniqueEntity(
     fields: ['raceDog', 'businessPage'],
-    message: 'Cette race de chien est déjà enregistrée parmi celles que vous élevez.',
+    message: 'Cette race de chien est déjà enregistrée...',
+    errorPath: 'raceDog', // <--- erreur liée au champ raceDog
     groups: ['eleveur-de-chien']
 )]
 class Breeder
@@ -64,7 +66,6 @@ class Breeder
     {
         $this->pets = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {

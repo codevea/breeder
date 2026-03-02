@@ -36,6 +36,7 @@ class Address implements Stringable
     #[ORM\OneToMany(targetEntity: BusinessPage::class, mappedBy: 'address')]
     private Collection $businessPages;
 
+
     public function __construct()
     {
         $this->businessPages = new ArrayCollection();
@@ -129,4 +130,5 @@ class Address implements Stringable
     {
         return $this->street . '<br>' . $this->zipCode . ' ' . $this->city . '<br>' .  $this->country;
     }
+
 }

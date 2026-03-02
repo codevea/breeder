@@ -46,10 +46,21 @@ class BusinessPage
     #[ORM\JoinColumn(nullable: false)]
     private ?Activity $activity = null;
 
+    /**
+     * @var Collection<int, Phone>
+     */
+    #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'businessPage', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Count(
+        min: 1,
+        minMessage: "Vous devez ajouter au moins un numéro de téléphone."
+    )]
+    private Collection $phone;
+
 
     public function __construct()
     {
         $this->breeders = new ArrayCollection();
+        $this->phone = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +143,36 @@ class BusinessPage
     public function setActivity(?Activity $activity): static
     {
         $this->activity = $activity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Phone>
+     */
+    public function getPhone(): Collection
+    {
+        return $this->phone;
+    }
+
+    public function addPhone(Phone $phone): static
+    {
+        if (!$this->phone->contains($phone)) {
+            $this->phone->add($phone);
+            $phone->setBusinessPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhone(Phone $phone): static
+    {
+        if ($this->phone->removeElement($phone)) {
+            // set the owning side to null (unless already changed)
+            if ($phone->getBusinessPage() === $this) {
+                $phone->setBusinessPage(null);
+            }
+        }
 
         return $this;
     }

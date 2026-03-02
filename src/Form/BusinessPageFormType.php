@@ -8,16 +8,18 @@ use App\Entity\Activity;
 use App\Entity\BusinessPage;
 use App\Entity\Siret;
 use App\Form\AddressFormType;
+use App\Form\PhoneFormType;
 use App\Form\SiretFormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -86,6 +88,21 @@ class BusinessPageFormType extends AbstractType
             }
         });
 
+        $builder->addDependent('phone', ['siret'], function (DependentField $field, ?string $siret) {
+            if ($siret !== null) {
+                $field->add(CollectionType::class, [
+                    'entry_type' => PhoneFormType::class,
+                    'label' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'prototype' => true,
+                    'constraints' => [new Assert\Valid()],
+                ]);
+            }
+        });
+
+        
         $builder->addDependent('submit', ['siret'], function (DependentField $field, ?string $siret) {
             if ($siret !== null) {
                 $field->add(SubmitType::class, [
