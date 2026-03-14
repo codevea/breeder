@@ -14,8 +14,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BusinessPageRepository::class)]
-#[UniqueEntity(fields: ['activity', 'user'],  message: 'Vous avez déjà sélectionné cette activité.')]
-#[UniqueEntity(fields: ['address'], message: ' Vous avez déjà déclaré cette adresse précédemment lors de la déclaration d’activité. Veuillez la sélectionner parmi celles qui sont déjà enregistrées. ')]
+#[ORM\UniqueConstraint(name: 'unique_user_activity', columns: ['user_id', 'activity_id'])] //  verrouiller la base de données
+#[UniqueEntity(fields: ['activity', 'user'], errorPath: 'activity', message: 'Vous avez déjà sélectionné cette activité.')]
 #[Assert\Cascade]
 class BusinessPage
 {
@@ -29,11 +29,13 @@ class BusinessPage
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'businessPages', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false, unique: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Veuillez fournir une adresse.')]
     private ?Address $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'businessPages', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Veuillez fournir votre numéro de SIRET.')]
     private ?Siret $siret = null;
 
     /**
@@ -44,16 +46,14 @@ class BusinessPage
 
     #[ORM\ManyToOne(inversedBy: 'businessPages')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Veuillez sélectionner une activité.')]
     private ?Activity $activity = null;
 
     /**
      * @var Collection<int, Phone>
      */
     #[ORM\OneToMany(targetEntity: Phone::class, mappedBy: 'businessPage', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Assert\Count(
-        min: 1,
-        minMessage: "Vous devez ajouter au moins un numéro de téléphone."
-    )]
+    #[Assert\Count(min: 1, max: 2, minMessage: "Vous devez ajouter au moins un numéro de téléphone.", maxMessage: "Vous ne pouvez pas ajouter plus de deux numéro de téléphone.")]
     private Collection $phone;
 
 

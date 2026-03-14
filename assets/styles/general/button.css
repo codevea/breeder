@@ -75,3 +75,17 @@ a.button:hover {
     color           : var(--white);
     transform       : scale(1.01);
 }
+
+button.buttonWidthAuto {
+    width           : auto;
+    display         : inline-flex;
+    flex-direction  : row;
+    justify-content : end;
+    align-items     : center;
+    align-content   : end;
+    margin: 0;
+    padding: 0.5rem;
+    background-color: #2D2D2D;
+    color: #ffffff;
+    border: none;
+}

@@ -28,27 +28,57 @@
     <br>
     {% for business in businessPages %}
         {% if business.activity.slug == 'eleveur-de-chat' %}
-            <strong>Gestion cheptel félin</strong><br>
+            <strong>Gestion élevage félin</strong><br>
+
+            {% set hasRace = false %}
             <ul>
                 {% for breeder in business.breeders %}
                     {% if breeder.raceCat %}
-                        <li><a href="{{path('app_profile_roleBreederVerified_pet_index', {'slug': breeder.slug})}}">{{ ux_icon('fluent:animal-cat-24-regular', {width:'18px'}) }} {{breeder.raceCat.race}}</a></li>
+                        {% set hasRace = true %}
+                        <li>
+                            <a href="{{ path('app_profile_roleBreederVerified_pet_index', {'slug': breeder.slug}) }}">
+                                {{ ux_icon('fluent:animal-cat-24-regular', {width:'18px'}) }}
+                                {{ breeder.raceCat.race }}
+                            </a>
+                        </li>
                     {% endif %}
                 {% endfor %}
             </ul>
+
+            {% if not hasRace %}
+                <div class="text">
+                    <p>{{ ux_icon('flat-color-icons:info', {width:'24px', height: '24px'}) }} Aucune race n'est encore associée à votre chatterie
+                    </p>
+                </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
-<br>
+    <br>
     {% for business in businessPages %}
         {% if business.activity.slug == 'eleveur-de-chien' %}
-            <strong>Gestion cheptel canin</strong><br>
+            <strong>Gestion élevage canin</strong><br>
+
+            {% set hasRace = false %}
             <ul>
                 {% for breeder in business.breeders %}
                     {% if breeder.raceDog %}
-                        <li><a href="{{path('app_profile_roleBreederVerified_pet_index', {'slug': breeder.slug})}}">{{ ux_icon('fluent:animal-dog-24-regular', {width:'18px'}) }} {{ breeder.raceDog.race }}</a></li>
+                        {% set hasRace = true %}
+                        <li>
+                            <a href="{{ path('app_profile_roleBreederVerified_pet_index', {'slug': breeder.slug}) }}">
+                                {{ ux_icon('fluent:animal-dog-24-regular', {width:'18px'}) }}
+                                {{ breeder.raceDog.race }}
+                            </a>
+                        </li>
                     {% endif %}
                 {% endfor %}
             </ul>
+
+            {% if not hasRace %}
+                <div class="text">
+                    <p>{{ ux_icon('flat-color-icons:info', {width:'24px', height: '24px'}) }} Aucune race n'est encore associée à votre élevage.
+                    </p>
+                </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
 

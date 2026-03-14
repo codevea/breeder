@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\Affixe;
@@ -10,17 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-namespace App\Form;
-
-use App\Entity\Affixe;
-use App\Entity\AffixeRegistration;
-use App\Repository\AffixeRegistrationRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AffixeFormType extends AbstractType
 {
@@ -41,6 +30,7 @@ class AffixeFormType extends AbstractType
                 'placeholder' => '-- Choisir le livre --',
                 'required' => false,
                 'row_attr' => ['class' => 'formColumn'],
+                'constraints' => [new Assert\Valid()],
                 'query_builder' => function (AffixeRegistrationRepository $repo) use ($species) {
                     return $repo->createQueryBuilder('a')
                         ->andWhere('a.species = :species')

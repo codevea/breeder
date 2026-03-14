@@ -121,9 +121,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private ?string $siren = null;
 
+    /**
+     * @var Collection<int, Address>
+     */
+    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $addresses;
+
+    /**
+     * @var Collection<int, Siret>
+     */
+    #[ORM\OneToMany(targetEntity: Siret::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $sirets;
+
+
     public function __construct()
     {
         $this->businessPage = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+        $this->sirets = new ArrayCollection();
     }
 
 
@@ -373,6 +388,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSiren(?string $siren): static
     {
         $this->siren = $siren;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            // set the owning side to null (unless already changed)
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Siret>
+     */
+    public function getSirets(): Collection
+    {
+        return $this->sirets;
+    }
+
+    public function addSiret(Siret $siret): static
+    {
+        if (!$this->sirets->contains($siret)) {
+            $this->sirets->add($siret);
+            $siret->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSiret(Siret $siret): static
+    {
+        if ($this->sirets->removeElement($siret)) {
+            // set the owning side to null (unless already changed)
+            if ($siret->getUser() === $this) {
+                $siret->setUser(null);
+            }
+        }
 
         return $this;
     }

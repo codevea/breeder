@@ -1,9 +1,15 @@
 <div {{ attributes }}>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {
+    attr: {
+    'data-action': 'live#action:prevent',
+    'data-live-action-param': 'save'
+    }
+    }) }}
 
-    {% if form_errors(form)  %}
-        <div class="error">
+{# Erreurs globales du formulaire #}
+    {% if form_errors(form) %}
+        <div class="warning">
             {{ form_errors(form) }}
         </div>
     {% endif %}
@@ -15,13 +21,15 @@
                     <div class="choiceSelectDesignButton">
                         {{ form_widget(child) }}
                         {{ form_label(child) }}
-                        {# Si éleveur canin ce SVG s'affiche #}
-                        {# {{ ux_icon('fluent:animal-dog-20-regular', {width:'32px', height:'32px'}) }} #}
-                        {# sinon Si :'activité est éleveur Félin ce SVG s'affiche #}
-                        {# {{ ux_icon('fluent:animal-cat-20-regular', {width:'32px', height:'32px'}) }} #}
                     </div>
+                    {{ form_errors(child) }}
                 </div>
             {% endfor %}
+            {% if form_errors(form.activity) %}
+            <div class="info">
+                {{ form_errors(form.activity) }}
+                </div>
+            {% endif %}
         </div>
 
         {% if form.activity is defined and form.addSiret is not defined %}
@@ -35,56 +43,192 @@
     {% if form.addSiret is defined %}
         {{ form_row(form.addSiret) }}
     {% endif %}
+
     {% if form.siret is defined %}
         {{ form_row(form.siret) }}
     {% endif %}
+
+    {% if form.addAddress is defined %}
+        {{ form_row(form.addAddress) }}
+    {% endif %}
+
     {% if form.address is defined %}
         {{ form_row(form.address) }}
     {% endif %}
 
- {% if form.phone is defined %}
-    <label>Vos numéros de téléphone</label>
-    {{ form_errors(form.phone) }}
+    {% if form.phone is defined %}
+        <label>Vos numéros de téléphone</label>
 
-    {# On récupère le nombre de lignes pour la condition #}
-    {% set totalPhones = form.phone|length %}
+        {# Récupère le nombre de lignes  #}
+        {% set totalPhones = form.phone|length %}
 
-    {% for key, phone in form.phone %}
-        <div class="collectionLive">
-            <div>
-                Téléphone:
-                {{ form_widget(phone.type) }}
+        {% for key, phone in form.phone %}
+
+            {% if form_errors(phone.type) %}
+                <div class="info">
+                    {{ form_errors(phone.type) }}
+                </div>
+            {% endif %}
+
+            {% if form_errors(phone.number) %}
+                <div class="info">
+                    {{ form_errors(phone.number) }}
+                </div>
+            {% endif %}
+
+            <div class="collectionLive">
+                <div>
+                    Téléphone:
+                    {{ form_widget(phone.type) }}
+                </div>
+                <div>
+                    Numéro:
+                    {{ form_widget(phone.number) }}
+                </div>
+                <div>
+                    {# ON NE MONTRE LE BOUTON QUE S'IL Y A PLUS D'UNE LIGNE #}
+                    {% if totalPhones > 1 %}
+                        <button class="buttonDelete" data-action="live#action" data-live-action-param="removePhone" data-live-index-param="{{ key }}">
+                            {{ ux_icon('material-symbols:delete-outline-rounded') }}
+                        </button>
+                    {% else %}
+                        {# Optionnel : un bouton grisé ou vide pour garder l'alignement #}
+                        <div style="width: 40px;"></div>
+                    {% endif %}
+                </div>
             </div>
-            <div>
-                Numéro:
-                {{ form_widget(phone.number) }}
+        {% endfor %}
+
+
+
+        {# ON NE MONTRE LE BOUTON QUE S'IL Y A PLUS DE 2 LIGNES #}
+        {% if totalPhones < 2 %}
+            <button class="buttonAddCollection" data-action="live#action" data-live-action-param="addPhone">
+                + Ajouter un numéro de téléphone
+            </button>
+        {% else %}
+            {# Optionnel : un bouton grisé ou vide pour garder l'alignement #}
+            <div style="width: 40px;"></div>
+        {% endif %}
+
+        {% do form.phone.setRendered %}
+    {% endif %}
+
+    {% if form.phone is defined %}
+        <button data-action="live#action" data-live-action-param="save">Enregistrer</button>
+    {% endif %}
+
+    {{ form_end(form) }}
+</div>
+
+
+<div {{ attributes }}>
+    {# 1. AFFICHAGE DES MESSAGES FLASH (Indispensable pour LiveComponent) #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="{{ label }}">
+                {{ message }}
             </div>
-            <div>
-                {# ON NE MONTRE LE BOUTON QUE S'IL Y A PLUS D'UNE LIGNE #}
-                {% if totalPhones > 1 %}
-                    <button class="buttonDelete" 
-                            data-action="live#action" 
-                            data-live-action-param="removePhone" 
-                            data-live-index-param="{{ key }}" 
-                            type="button">
-                        {{ ux_icon('material-symbols:delete-outline-rounded') }}
-                    </button>
-                {% else %}
-                    {# Optionnel : un bouton grisé ou vide pour garder l'alignement #}
-                    <div style="width: 40px;"></div> 
-                {% endif %}
-            </div>
-        </div>
+        {% endfor %}
     {% endfor %}
-    
-    {% do form.phone.setRendered %}
-    <button class="buttonAddCollection" data-action="live#action" data-live-action-param="addPhone" type="button">
-        + Ajouter un numéro de téléphone
-    </button>
-{% endif %}
 
-    {% if form.submit is defined %}
-        {{ form_row(form.submit) }}
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+
+    {# Erreurs globales du formulaire #}
+    {% if form_errors(form) %}
+        <div class="warning">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <div>
+        <div class="contenuCardProfile">
+            {% for child in form.activity %}
+                <div class="cardProfile">
+                    <div class="choiceSelectDesignButton">
+                        {{ form_widget(child) }}
+                        {{ form_label(child) }}
+                    </div>
+                    {{ form_errors(child) }}
+                </div>
+            {% endfor %}
+        </div>
+        
+        {# 2. ERREUR SPÉCIFIQUE À L'ACTIVITÉ (ex: Doublon détecté dans le save) #}
+        {% if form_errors(form.activity) %}
+            <div class="warning">
+                {{ form_errors(form.activity) }}
+            </div>
+        {% endif %}
+
+        {% if form.activity is defined and form.addSiret is not defined %}
+            <div id="placeholder" class="formPlaceholder">
+                {{ ux_icon('solar:cursor-square-bold-duotone', {width:'48px', height:'48px'}) }}
+                <p>En attente de votre sélection ci-dessus</p>
+            </div>
+        {% endif %}
+    </div>
+
+    {# Sections dépendantes #}
+    {% if form.addSiret is defined %}{{ form_row(form.addSiret) }}{% endif %}
+    {% if form.siret is defined %}{{ form_row(form.siret) }}{% endif %}
+    {% if form.addAddress is defined %}{{ form_row(form.addAddress) }}{% endif %}
+    {% if form.address is defined %}{{ form_row(form.address) }}{% endif %}
+
+    {# Section Téléphones #}
+    {% if form.phone is defined %}
+        <label>Vos numéros de téléphone</label>
+
+        {% set totalPhones = form.phone|length %}
+
+        {% for key, phone in form.phone %}
+            {# Affichage des erreurs de validation du numéro ou du type #}
+            {% if form_errors(phone.type) or form_errors(phone.number) %}
+                <div class="info">
+                    {{ form_errors(phone.type) }}
+                    {{ form_errors(phone.number) }}
+                </div>
+            {% endif %}
+
+            <div class="collectionLive">
+                <div>
+                    Téléphone: {{ form_widget(phone.type) }}
+                </div>
+                <div>
+                    Numéro: {{ form_widget(phone.number) }}
+                </div>
+                <div>
+                    {% if totalPhones > 1 %}
+                        <button type="button" class="buttonDelete" 
+                                data-action="live#action" 
+                                data-live-action-param="removePhone" 
+                                data-live-index-param="{{ key }}">
+                            {{ ux_icon('material-symbols:delete-outline-rounded') }}
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if totalPhones < 2 %}
+            <button type="button" class="buttonAddCollection" data-action="live#action" data-live-action-param="addPhone">
+                + Ajouter un numéro de téléphone
+            </button>
+        {% endif %}
+
+        {% do form.phone.setRendered %}
+    {% endif %}
+
+    {# 3. BOUTON D'ENREGISTREMENT FINAL #}
+    {% if form.addSiret is defined %}
+        <div>
+            <button type="submit">Enregistrer</button>
+        </div>
     {% endif %}
 
     {{ form_end(form) }}

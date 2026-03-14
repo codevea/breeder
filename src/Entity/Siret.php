@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SiretRepository::class)]
 #[UniqueEntity(fields: ['number'], message: 'Ce numéro de SIRET existe déjà.')]
@@ -19,6 +20,8 @@ class Siret implements Stringable
     private ?int $id = null;
 
     #[ORM\Column(length: 14, unique: true)]
+    #[Assert\Length(min: 14, max: 14,exactMessage: 'Le numéro de SIRET doit comporter 14 chiffres.')]
+    #[Assert\NotBlank(message: 'Le numéro de SIRET est obligatoire.')]
     private ?string $number = null;
 
     /**
@@ -26,6 +29,10 @@ class Siret implements Stringable
      */
     #[ORM\OneToMany(targetEntity: BusinessPage::class, mappedBy: 'siret')]
     private Collection $businessPages;
+
+    #[ORM\ManyToOne(inversedBy: 'sirets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -82,5 +89,17 @@ class Siret implements Stringable
     public function __toString(): string
     {
         return $this->number ?? '';
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

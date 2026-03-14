@@ -20,6 +20,7 @@ class Pet
 
     #[ORM\OneToOne(inversedBy: 'pet', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
     private ?Icad $icad = null;
 
     #[ORM\ManyToOne(inversedBy: 'pets')]
@@ -31,7 +32,8 @@ class Pet
     #[ORM\JoinColumn(nullable: false)]
     private ?Breeder $breeder = null;
 
-    #[ORM\ManyToOne(inversedBy: 'pets')]
+    #[ORM\ManyToOne(inversedBy: 'pets', cascade: ['persist'])]
+    #[Assert\Valid]
     private ?Affixe $affixe = null;
 
 

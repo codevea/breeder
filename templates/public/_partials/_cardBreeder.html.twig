@@ -1,17 +1,29 @@
 <div class="cardBreeder">
-	<div>
-		<div class="cardBreederTitle">
-			<div>{% include 'svg/dog.svg' %}</div>
-			<h3>DES JARDINS PERSANS</h3>
-		</div>
-		<!-- contenu de la carte -->
-	</div>
+    {% for breeder in breeders %}
+        <div>
+            <div class="cardBreederTitle">
+                <div>{% if breeder.raceDog %}{% include 'svg/dog.svg' %} {% else %}{% include 'svg/cat.svg' %} {% endif %}</div>
+                <h3>
+                    {% if breeder.raceDog %}
+                        {{breeder.raceDog.race}}
+                    {% endif %}
+                    {% if breeder.raceCat %}
+                        {{breeder.raceCat.race}}
+                    {% endif %}
+                </h3>
 
-	<div>
-		<div class="cardBreederTitle">
-			<div>{% include 'svg/cat.svg' %}</div>
-			<h3>DES ROSES DE PERSE</h3>
-		</div>
-		<!-- contenu de la carte -->
-	</div>
-</div>
+            </div>
+            <div>
+                <a href="{{path('app_public_breeder', {'slug' : breeder.slug})}}">
+                    {% if breeder.raceDog %}
+                        {{breeder.raceDog.race}}
+                    {% endif %}
+                    {% if breeder.raceCat %}
+                        {{breeder.raceCat.race}}
+                    {% endif %}
+                    Affixe:
+                    {{breeder.affixe}}
+                </a></div>
+            </div>
+        {% endfor %}
+    </div>

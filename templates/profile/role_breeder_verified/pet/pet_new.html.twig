@@ -14,5 +14,7 @@
     {% endblock %}
 
     {% block body %}
-        {{form(formPet)}}
+{{ component('PetForm', { 
+            breeder: breeder 
+        }) }}
     {% endblock %}

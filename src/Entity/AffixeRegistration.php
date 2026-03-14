@@ -23,7 +23,7 @@ class AffixeRegistration implements Stringable
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: "Veuillez spécifier le livre officiel d’enregistrement.")]
     private ?string $officialRegister = null;
 
     #[ORM\Column(length: 255)]

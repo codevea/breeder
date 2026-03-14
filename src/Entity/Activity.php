@@ -28,7 +28,6 @@ class Activity implements Stringable
 
     #[ORM\Column(length: 255, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Assert\NotBlank]
     private ?string $slug = null;
 
     /**

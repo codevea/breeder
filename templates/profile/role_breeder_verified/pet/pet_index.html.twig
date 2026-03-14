@@ -1,7 +1,7 @@
 {% extends 'base_profile.html.twig' %}
 
 {% block contenuText %}
-    Gestion de mon cheptel
+    Gestion de mon élevage de
 {% endblock %}
 
 {% block contenuTextLinear %}
@@ -18,40 +18,137 @@
 {% endblock %}
 
 {% block body %}
+    <div class="containerSection">
+        <h2>Affixe : <a href="#">{{breeder.affixe.name}}</a></h2>
 
-    <div>
-        <h2>Gerez mon cheptel</h2>
 
-<div class="containerSection">
-        <div class="conteneurTable">
-            <div class="ligneTable enteteTable">
-                <div>Genre</div>
-                <div>Nom</div>
-                <div>Affixe</div>
-                <div>I-Cad</div>
-                <div></div>
+        {% if breeder.webSite %}
+            <div class="text icon">
+                <p>{{ ux_icon('flat-color-icons:ok', {width:'24px', height: '24px'}) }}  Site internet : {{breeder.webSite.url}}
+                </p>
             </div>
+        {% else %}
 
-            {% for pet in pets %}
-                <div class="ligneTable">
-                    <div>{{pet.petGender}}</div>
-                    <div>{{pet.name}}</div>
-                    <div>{{pet.affixe}}</div>
-                    <div>{{pet.icad.number}}</div>
-                    <div><a class="button" href="{{path('app_profile_roleBreederVerified_pet_edit', {'id':pet.id})}}">Modifier</a></div>
+            <div class="containerDuo">
+                <div class="text icon">
+                    <h3>Boostez votre visibilité grâce à l'échange de liens</h3>
+                    <br>
+                    <p>
+                        {{ ux_icon('flat-color-icons:info', {width:'24px', height: '24px'}) }}
+
+                        Indiquez l'URL de votre site web pour qu'elle apparaisse sur toutes vos annonces et vos page de présentation de votre élevage. En retour, insérez notre lien sur votre site : dès que notre système détecte le lien de retour, votre lien sera afficher sur les pages de éleveurChienChat.com
+                    </p>
                 </div>
-            {% endfor %}
-        </div>
-        </div>
 
-        <div>
-            <a href="{{path('app_profile_roleBreederVerified_pet_new', {'slug':breeder.slug})}}">Ajouter un{% if breeder.raceDog %} chien {% endif %}{% if breeder.raceCat %} chat {% endif %}à mon élevage</a>
-        </div>
+                <div class="terminal-container">
+                    <div class="terminal-header">
+                        <span class="terminal-title">HTML</span>
+                        {# Une seule déclaration de class ici #}
+                        <button onclick="copyToClipboard()" id="copy-btn" class="buttonWidthAuto terminal-copy">
+                            {{ ux_icon('solar:copy-line-duotone', {width:'20px', height:'20px'}) }}
+                            <span class="btn-text">Copier</span>
+                        </button>
+                    </div>
+                    <div class="terminal-body">
+                        <code id="code-to-copy">&lt;a href="https://www.eleveurchienchat.com" target="_blank"&gt;ÉleveurChienChat.com&lt;/a&gt;</code>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <script>
+            function copyToClipboard() {
+                const codeElement = document.getElementById('code-to-copy');
+                const btn = document.getElementById('copy-btn');
+                const btnText = btn.querySelector('.btn-text'); // On cible le texte spécifiquement
+
+                // Récupération du texte
+                const textToCopy = codeElement.innerText || codeElement.textContent;
+
+                // Utilisation de l'API clipboard
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // 1. On change le texte
+                    const originalText = btnText.innerText;
+                    btnText.innerText = "Copié !";
+
+                    // 2. Optionnel : changement de style temporaire
+                    btn.style.color = "#28a745";
+
+                    // 3. Retour à la normale après 2 secondes
+                    setTimeout(() => {
+                        btnText.innerText = originalText;
+                        btn.style.color = ""; // Reprend le CSS d'origine
+                    }, 2000);
+                    }).catch(err => {
+                    console.error('Erreur lors de la copie : ', err);
+                });
+            }
+        </script>
     </div>
 
-    <div class="contenuCardProfile">
-        <div class="cardProfile">
-            <h2>Annoncer une naissance</h2>
+
+
+    <div class="containerSection">
+        <h3> Gerez mon cheptel</h3>
+        {% if pets is not empty %}
+            <div class="conteneurTable">
+                <div class="ligneTable enteteTable">
+                    <div>Genre</div>
+                    <div>Nom</div>
+                    <div>Affixe</div>
+                    <div>I-Cad</div>
+                    <div></div>
+                </div>
+                {% for pet in pets %}
+                    <div class="ligneTable">
+                        <div>{{pet.petGender}}</div>
+                        <div>{{pet.name}}</div>
+                        <div>{{pet.affixe}}</div>
+                        <div>{{pet.icad.number}}</div>
+                        <div><a class="button" href="{{path('app_profile_roleBreederVerified_pet_edit', {'id':pet.id})}}">Modifier</a></div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div>
+                <a class="button" href="{{path('app_profile_roleBreederVerified_pet_new', {'slug':breeder.slug})}}">Ajouter un{% if breeder.raceDog %} chien {% endif %}{% if breeder.raceCat %} chat {% endif %}à mon élevage</a>
+            </div>
+        {% else %}
+            <div class="text icon">
+                <p>{{ ux_icon('flat-color-icons:info', {width:'24px', height: '24px'}) }}
+                    Enregistrez un
+                    {% if breeder.raceDog %}
+                        chien
+                    {% endif %}
+                    {% if breeder.raceCat %}
+                        chat
+                    {% endif %}
+                    reproducteur pour commencer à gérer votre cheptel.
+                </p>
+            </div>
+            <div>
+                <a class="button" href="{{path('app_profile_roleBreederVerified_pet_new', {'slug':breeder.slug})}}">Ajouter un{% if breeder.raceDog %} chien {% endif %}{% if breeder.raceCat %} chat {% endif %}à mon élevage</a>
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div class="containerSection">
+        <h2>Présentation de mon élevage</h2>
+
+        <div class="ql-snow">
+            <div class="ql-editor">
+                {{ breeder.presentation|raw }}
+            </div>
+        </div>
+
+        <div>{{form(formBreederPresentation)}}</div>
+    </div>
+
+    <div class="containerSection">
+        <h2>Annoncer une naissance</h2>
+        <div class="containerCardAnnonce">
+            <div class="cardAnnonce">
+                Annonce
+            </div>
         </div>
     </div>
 {% endblock %}

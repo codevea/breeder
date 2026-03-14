@@ -28,13 +28,11 @@ class Affixe implements Stringable
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    // #[Assert\Unique(message: 'Cette affixe est déjà enregistrée dans la base de données.')]
     #[Assert\NotBlank(message: 'Vous devez saisir un nom d\'affixe')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Assert\NotBlank]
     private ?string $slug = null;
 
     /**
@@ -44,8 +42,6 @@ class Affixe implements Stringable
     private Collection $breeders;
 
     #[ORM\ManyToOne(inversedBy: 'affixes')]
-    // #[ORM\JoinColumn(nullable: false)]
-    // #[Assert\NotNull]
     #[Assert\Valid]
     private ?AffixeRegistration $affixeRegistration = null;
 
@@ -54,7 +50,6 @@ class Affixe implements Stringable
      */
     #[ORM\OneToMany(targetEntity: Pet::class, mappedBy: 'affixe')]
     private Collection $pets;
-
 
     public function __construct()
     {
@@ -122,11 +117,6 @@ class Affixe implements Stringable
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->name;
-    }
-
     public function getAffixeRegistration(): ?AffixeRegistration
     {
         return $this->affixeRegistration;
@@ -167,5 +157,10 @@ class Affixe implements Stringable
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?: '';
     }
 }

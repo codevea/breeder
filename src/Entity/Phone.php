@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PhoneRepository::class)]
-#[UniqueEntity(fields: ['businessPage', 'number'],  message: 'Vous avez déjà ce uméro de téléphone d\'enregister.')]
+#[UniqueEntity(fields: ['businessPage', 'number'],  message: 'Vous avez déjà ce numéro de téléphone d\'enregister, veiller le selectionner dans la liste deroulante.')]
 class Phone
 {
     #[ORM\Id]
@@ -17,7 +17,7 @@ class Phone
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le numéro est obligatoire.")]
+    #[Assert\NotBlank(message: "Au moins un numéro de téléphone est obligatoire.")]
     #[Assert\Regex(
         pattern: "/^[0-9]{10}$/",
         message: "Votre numéro doit comporter 10 chiffres (ex: 0612345678)."
@@ -25,7 +25,7 @@ class Phone
     private ?string $number = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank(message: "Vous devez selectionner le type de numéro.")]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'phone')]

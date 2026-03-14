@@ -1,28 +1,14 @@
 <div {{ attributes }}>
-    {# On lie la soumission du formulaire à l'action "save" du PHP #}
+
     {{ form_start(form, {
     attr: {
-    'data-action': 'live#action:prevent|save'
+    'data-action': 'live#action:prevent',
+    'data-live-action-param': 'save'
     }
     }) }}
 
-    {# Juste après le form_start #}
-    {% if not form.vars.valid %}
-        <div class="error">
-            <p>Le formulaire contient des erreurs :</p>
-            {{ form_errors(form) }}
-            {# On force l'affichage des erreurs profondes si elles ne sont pas apparues #}
-            <ul>
-                {% for child in form.children %}
-                    {% for error in child.vars.errors %}
-                        <li>{{ child.vars.label }}: {{ error.message }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
     {% if form_errors(form) %}
-        <div class="error">
+        <div class="info">
             {{ form_errors(form) }}
         </div>
     {% endif %}
@@ -32,7 +18,7 @@
     {% if form.affixe is defined %}
         <div>
             {% if form.affixe.name is defined %}
-                {{ form_row(form.affixe.name, { 'attr': { 'data-action': 'live#validate' } }) }}
+                {{ form_row(form.affixe.name) }}
                 {{ form_row(form.affixe.affixeRegistration) }}
             {% else %}
                 {{ form_row(form.affixe) }}
@@ -41,37 +27,30 @@
     {% endif %}
 
     {% if form.raceCat is defined %}
-        {{ form_row(form.raceCat, {
-        'attr': {
-        'data-action': 'live#action',
-        'data-live-action-param': 'validate'
-        }
-        }) }}
+        {{ form_row(form.raceCat) }}
     {% endif %}
 
     {% if form.raceDog is defined %}
-        {{ form_row(form.raceDog, {
-        'attr': {
-        'data-action': 'live#action',
-        'data-live-action-param': 'validate'
-        }
-        }) }}
+        {{ form_row(form.raceDog) }}
     {% endif %}
 
-    <div>
-        <button
-        type="button"
-        data-action="live#action"
-        data-live-action-param="save"
-        >
-        Ajouter la race
-    </button>
+    {% if form.addWebSite is defined %}
+        {{ form_row(form.addWebSite) }}
+    {% endif %}
 
-</div>
+    {% if form.addSelectWebSite is defined %}
+        {{ form_row(form.addSelectWebSite) }}
+    {% endif %}
 
-{# 1. On génère manuellement le jeton SANS le contrôleur "csrf-protection" #}
-{# <input type="hidden" name="breeder_form[_token]" value="{{ csrf_token('breeder_form') }}"> #}
-{# 2. On ferme le formulaire en disant de NE PAS générer automatiquement le reste #}
-{# {{ form_end(form, { render_rest: false }) }} #}
-{{ form_end(form) }}
+    {% if form.webSite is defined %}
+        {{ form_row(form.webSite) }}
+    {% endif %}
+
+    {{ form_rest(form) }}
+
+    {% if form.addWebSite is defined %}
+        <button data-action="live#action" data-live-action-param="save">Ajouter la race</button>
+    {% endif %}
+
+    {{ form_end(form) }}
 </div>

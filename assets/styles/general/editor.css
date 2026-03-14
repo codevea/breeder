@@ -1,0 +1,65 @@
+.terminal-container {
+    background-color: #1a1a1a;
+    border-radius: 6px;
+    margin: 0;
+    overflow: hidden;
+    color: #ffffff;
+    font-family: "mono";
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    padding:0.5rem;
+    margin: 0 auto;
+    width: 100%;
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #333;
+}
+
+.terminal-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.05em;
+}
+
+.terminal-copy {
+    background: transparent;
+    border: 1px solid #444;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+}
+
+.terminal-copy svg {
+    width: 14px;
+    height: 14px;
+}
+
+.terminal-copy:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+.terminal-body {
+    padding: 16px;
+    overflow-x: auto;
+}
+
+.terminal-body pre {
+    margin: 0;
+}
+
+.terminal-body code {
+    color: #f8f8f2;
+    font-size: 14px;
+    line-height: 1.5;
+}

@@ -5,7 +5,7 @@ namespace App\Controller\Profile\RoleBreederVerified\Pet;
 use App\Entity\Breeder;
 use App\Entity\Pet;
 use App\Entity\User;
-use App\Form\PetFormType;
+use App\Form\BreederPresentationFormType;
 use App\Repository\BusinessPageRepository;
 use App\Repository\PetRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,17 +25,33 @@ final class PetController extends AbstractController
     #[Route('/gestion-de-votre-cheptel/{slug:breeder}', name: 'index')]
     #[IsGranted('ROLE_USER')]
     #[IsGranted('ROLE_BREEDER_VERIFIED')]
-    public function index(PetRepository $petRepository, Breeder $breeder, BusinessPageRepository $businessPageRepository): Response
+    public function index(PetRepository $petRepository, Breeder $breeder, BusinessPageRepository $businessPageRepository, Request $request, EntityManagerInterface $em): Response
     {
         /** @var User|null $user */
         $user = $this->getUser();
         $businessPages = $businessPageRepository->findBy(['user' => $user]);
         $pets = $petRepository->findBy(['breeder' => $breeder]);
 
+        $formBreederPresentation = $this->createForm(BreederPresentationFormType::class, $breeder);
+        $formBreederPresentation->handleRequest($request);
+        if ($formBreederPresentation->isSubmitted() && $formBreederPresentation->isValid()) {
+            try {
+                $em->persist($breeder);
+                $em->flush();
+                $this->addFlash('success', 'Votre contenu de présentation à bien été enregistrer.');
+                return $this->redirectToRoute('app_profile_roleBreederVerified_pet_index', ['slug' => $breeder->getSlug()]);
+            } catch (\Throwable $th) {
+
+                $this->addFlash('danger', 'Une erreur est survenue lors de l’enregistrement.');
+                return $this->redirectToRoute('app_profile_roleBreederVerified_pet_index', ['slug' => $breeder->getSlug()]);
+            }
+        }
+
         return $this->render('profile/role_breeder_verified/pet/pet_index.html.twig', [
             'breeder' => $breeder,
             'businessPages' => $businessPages,
             'pets' => $pets,
+            'formBreederPresentation' => $formBreederPresentation,
         ]);
     }
 
@@ -49,22 +65,8 @@ final class PetController extends AbstractController
         $user = $this->getUser();
         $businessPages = $businessPageRepository->findBy(['user' => $user]);
 
-        $pet = new Pet();
-        $formPet = $this->createForm(PetFormType::class, $pet);
-        $formPet->handleRequest($request);
-
-        if ($formPet->isSubmitted() && $formPet->isValid()) {
-            $formPet = $pet->setBreeder($breeder);
-            $em->persist($formPet);
-            $em->flush();
-
-            $this->addFlash('success', 'Votre animal à bien été créer');
-            return $this->redirectToRoute('app_profile_roleBreederVerified_pet_new', ['slug' => $breeder->getSlug()]);
-        }
-
         return $this->render('profile/role_breeder_verified/pet/pet_new.html.twig', [
             'businessPages' => $businessPages,
-            'formPet' => $formPet,
             'breeder' => $breeder,
         ]);
     }
@@ -78,24 +80,9 @@ final class PetController extends AbstractController
         $user = $this->getUser();
         $businessPages = $businessPageRepository->findBy(['user' => $user]);
 
-        // $slug = $pet->getBreeder()->getSlug();
-
-        // $formPet = $this->createForm(PetFormType::class, $pet);
-        // $formPet->handleRequest($request);
-
-        // if ($formPet->isSubmitted() && $formPet->isValid()) {
-        //     $em->persist($pet);
-        //     $em->flush();
-
-        //     $this->addFlash('success', 'Les modification de la fiche de votre animal à bien été enregistrer');
-        //     return $this->redirectToRoute('app_profile_roleBreederVerified_pet_index', ['slug' => $slug]);
-        // }
-
-
         return $this->render('profile/role_breeder_verified/pet/pet_edit.html.twig', [
             'businessPages' => $businessPages,
             'pet' => $pet,
-            // 'formPet' => $formPet,
         ]);
     }
 
@@ -104,7 +91,7 @@ final class PetController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function delete(Pet $pet, EntityManagerInterface $em, Request $request)
     {
-        if ($this->isCsrfTokenValid('delete'.$pet->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $pet->getId(), $request->getPayload()->getString('_token'))) {
 
             $pet->setBreeder(null);
             $em->remove($pet);

@@ -30,13 +30,13 @@
                     {{businessPage.user.lastName}}
                 </div>
                 <div>
-                    <strong  class="mono">SIRET :</strong>
+                    <strong class="mono">SIRET :</strong>
                     <span class="mono">{{businessPage.siret}}<span>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <strong class="mono"> Adresse :</strong>
+                        <strong class="mono">Adresse :</strong>
                         {{businessPage.address.street}}
                         {{businessPage.address.zipCode}}
                         {{businessPage.address.city}}
@@ -46,75 +46,67 @@
                             <strong class="mono">{{phone.type}} : </strong>{{phone.number}}
                         </div>
                     {% endfor %}
-                    <div>
-                        <strong class="mono">Site web :</strong> lesitepinpin
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="containerSection">
-            {% if businessPage.activity.slug == 'eleveur-de-chat' %}
-                <h2>Gerez mes élevage</h2>
-                <div class="conteneurTable">
 
+        {% set hasCatRaces = false %}
+        {% set hasDogRaces = false %}
+        {% for breeder in businessPage.breeders %}
+            {% set hasCatRaces = hasCatRaces or (breeder.raceCat is not null) %}
+            {% set hasDogRaces = hasDogRaces or (breeder.raceDog is not null) %}
+        {% endfor %}
+
+        {% if businessPage.activity.slug == 'eleveur-de-chat' and hasCatRaces %}
+            <div>
+                <h2>Gerez mes élevages</h2>
+                <div class="conteneurTable">
                     <div class="ligneTable enteteTable">
-                        <div>Nom</div>
-                        <div>Affixe</div>
-                        <div>N° Affixe</div>
-                        <div></div>
+                        <div>élevage</div><div>Affixe</div><div>N° Affixe</div><div></div>
                     </div>
+
                     {% for breeder in businessPage.breeders %}
                         {% if breeder.raceCat is not null %}
                             <div class="ligneTable">
                                 <div class="icon">
                                     {{ ux_icon('fluent:animal-cat-20-regular', {width:'18px'}) }}
-                                    {{ breeder.raceCat }}
+                                    {{ breeder.raceCat.race|default(breeder.raceCat) }}
                                 </div>
-                                <div>
-                                    {{ breeder.affixe }}
-                                </div>
-                                <div>
-                                    LOOF c458215
-                                </div>
-                                <div>
-                                    {% include "profile/_partials/_delete/_delete_form_breeder_race.html.twig" %}
-                                </div>
+                                <div>{{ breeder.affixe }}</div>
+                                <div>LOOF c458215</div>
+                                <div>{% include "profile/_partials/_delete/_delete_form_breeder_race.html.twig" %}</div>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
-            {% endif %}
+            </div>
+        {% endif %}
 
-
-            {% if businessPage.activity.slug == 'eleveur-de-chien' %}
-                <h2>Gerez mes élevage</h2>
+        {% if businessPage.activity.slug == 'eleveur-de-chien' and hasDogRaces %}
+            <div class="containerSection">
+                <h2>Gerez mes élevages</h2>
                 <div class="conteneurTable">
-
                     <div class="ligneTable enteteTable">
-                        <div>Nom</div>
-                        <div>Affixe</div>
-                        <div></div>
+                        <div>élevage</div><div>Affixe</div><div></div>
                     </div>
+
                     {% for breeder in businessPage.breeders %}
                         {% if breeder.raceDog is not null %}
                             <div class="ligneTable">
                                 <div class="icon">
-                                    {{ ux_icon('fluent:animal-dog-20-regular', { width:'18px' })}}
-                                    {{ breeder.raceDog }}
+                                    {{ ux_icon('fluent:animal-dog-20-regular', {width:'18px'}) }}
+                                    {{ breeder.raceDog.race|default(breeder.raceDog) }}
                                 </div>
-                                <div>
-                                    {{ breeder.affixe }}
-                                </div>
-                                <div>
-                                    {% include "profile/_partials/_delete/_delete_form_breeder_race.html.twig" %}
-                                </div>
+                                <div>{{ breeder.affixe }}</div>
+                                <div>{% include "profile/_partials/_delete/_delete_form_breeder_race.html.twig" %}</div>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
+
 
 
 
@@ -130,24 +122,18 @@
             {% set totalRaces = globalsRaceDogsFindAll|length %}
         {% endif %}
 
-        {# Afficher le bloc uniquement si toutes les races ne sont pas encore ajoutées #}
+        {# Afficher le bloc uniquement si toutes les races ne sont pas ajoutées #}
         {% if total is defined and total < totalRaces %}
             <div class="containerSection">
-                <div class="containerDuo">
-                    <div>
-                        {% if isCat %}
-                            <h2>Ajouter une race de chat à mon activité</h2>
-                        {% elseif isDog %}
-                            <h2>Ajouter une race de chien à mon activité</h2>
-                        {% endif %}
-                        {{ component('BreederForm', {
-                        businessPage: businessPage,
-                        type: isCat ? 'cat' : 'dog'
-                        }) }}
-                    </div>
-
-                    <div></div>
-                </div>
+                {% if isCat %}
+                    <h2>Ajouter une race de chat que vous élevée</h2>
+                {% elseif isDog %}
+                    <h2>Ajouter une race de chien que vous élevée</h2>
+                {% endif %}
+                {{ component('BreederForm', {
+                businessPage: businessPage,
+                type: isCat ? 'cat' : 'dog'
+                }) }}
             </div>
         {% endif %}
 

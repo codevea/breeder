@@ -182,7 +182,7 @@ input[type="checkbox"] {
     gap            : 2rem;
     margin         : 0 auto;
     width          : 100%;
-    padding        :2rem 0;
+    padding        : 2rem 0;
 
     >div {
         margin         : 0 auto;
@@ -196,4 +196,16 @@ input[type="checkbox"] {
         gap            : 1rem;
         margin         : 0 auto;
     }
+}
+
+textarea {
+    resize       : vertical;
+    width        : 100%;
+    margin       : 0 auto;
+    height       : 200px;
+    padding      : 0.5rem;
+    border-radius: 3px;
+    border       : 2px dashed var(--bluePastel);
+    font-size    : inherit;
+    font-family  : inherit;
 }

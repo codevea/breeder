@@ -6,10 +6,11 @@ use App\Entity\Affixe;
 use App\Entity\Breeder;
 use App\Entity\RaceCat;
 use App\Entity\RaceDog;
+use App\Entity\WebSite;
+use App\Form\WebSiteFormType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-// use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,16 +34,16 @@ class BreederFormType extends AbstractType
          */
         $builder = new DynamicFormBuilder($builder);
 
-        // 1. Choix initial : Nouveau ou Existant ?
+
         $builder->add('addAffixe', ChoiceType::class, [
             'choices' => ['Oui' => '1', 'Non' => '2'],
             'placeholder' => 'Choisissez...',
-            'label' => 'Ajouter un nouvel affixe pour cette race ?',
+            'label' => 'Ajouter un nouvel affixe pour votre élevage ?',
             'mapped' => false,
             'row_attr' => ['class' => 'formColumn'],
         ]);
 
-        // 2. Champ affixe dépendant
+
         $builder->addDependent('affixe', ['addAffixe'], function (DependentField $field, ?string $addAffixe) use ($type) {
 
             if ($addAffixe === '1') {
@@ -65,10 +66,10 @@ class BreederFormType extends AbstractType
             }
         });
 
-        // 3. Champ race dépendant
-        $builder->addDependent($type === 'cat' ? 'raceCat' : 'raceDog', ['addAffixe'], function (DependentField $field, ?string $addAffixe) use ($type) {
 
-            if ($addAffixe !== null) {
+        $builder->addDependent($type === 'cat' ? 'raceCat' : 'raceDog', ['affixe'], function (DependentField $field, ?string $affixe) use ($type) {
+
+            if ($affixe) {
                 $field->add(EntityType::class, [
                     'class' => $type === 'cat' ? RaceCat::class : RaceDog::class,
                     'choice_label' => 'race',
@@ -80,9 +81,63 @@ class BreederFormType extends AbstractType
             }
         });
 
-        // $builder->add('submit', SubmitType::class, [
-        //     'label' => 'Ajouter',
-        // ]);
+
+        // 1. On définit dynamiquement le nom du champ de race à surveiller
+        $raceFieldName = ($type === 'cat') ? 'raceCat' : 'raceDog';
+
+        $builder->addDependent('addWebSite', [$raceFieldName], function (DependentField $field, ?string $raceValue) {
+            // Si une race est sélectionnée ($raceValue n'est pas null ou vide)
+            if ($raceValue) {
+                $field->add(ChoiceType::class, [
+                    'choices' => ['Oui' => '1', 'Non' => '2'],
+                    'placeholder' => 'Choisissez...',
+                    'label' => 'Voulez-vous enregistrer l\'adresse de votre site internet ?',
+                    'mapped' => false,
+                    'row_attr' => ['class' => 'formColumn'],
+                ]);
+            }
+        });
+
+
+        $builder->addDependent('webSite', ['addWebSite'], function (DependentField $field, ?string $addWebSite) {
+
+            if ($addWebSite === '1') {
+                $field->add(WebSiteFormType::class, [
+                    'label' => false,
+                    'validation_groups' => ['eleveur-de-chat', 'eleveur-de-chien'],
+                    'constraints' => [new Assert\Valid()],
+                ]);
+            }
+        });
+
+        $builder->addDependent('addSelectWebSite', ['addWebSite'], function (DependentField $field, ?string $addWebSite) {
+
+            if ($addWebSite === '2') {
+                $field->add(ChoiceType::class, [
+                    'choices' => ['Oui' => '1', 'Non' => '2'],
+                    'placeholder' => 'Choisissez...',
+                    'label' => 'Voulez-vous selectionnez votre site parmie ceux que vous avez déjà enregistrer ?',
+                    'mapped' => false,
+                    'row_attr' => ['class' => 'formColumn'],
+                ]);
+            }
+        });
+
+
+        $builder->addDependent('webSite', ['addSelectWebSite'], function (DependentField $field, ?string $addSelectWebSite) {
+
+            if ($addSelectWebSite === '1') {
+                $field->add(EntityType::class, [
+                    'class' => WebSite::class,
+                    'choice_label' => 'url',
+                    'placeholder' => '-- Sélectionnez l\'adresse de votre site web --',
+                    'label' => 'Choisir une adresse URL existante ?',
+                    'required' => false,
+                    'row_attr' => ['class' => 'formColumn'],
+                    'validation_groups' => ['eleveur-de-chat', 'eleveur-de-chien'],
+                ]);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -90,7 +145,6 @@ class BreederFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Breeder::class,
             'breeder_type' => 'cat', // valeur par défaut
-            'csrf_protection' => false,
         ]);
     }
 }

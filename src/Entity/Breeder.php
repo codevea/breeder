@@ -8,6 +8,7 @@ use App\Entity\RaceCat;
 use App\Repository\BreederRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,12 +35,14 @@ class Breeder
 
     #[Assert\NotNull(groups: ['eleveur-de-chat'])]
     #[Assert\Valid(groups: ['eleveur-de-chat'])]
+    #[Assert\NotBlank(message: 'Vous devez choisir la race que vous élevez')]
     #[ORM\ManyToOne(inversedBy: 'breeders')]
     #[ORM\JoinColumn(nullable: true)]
     private ?RaceCat $raceCat = null;
 
     #[Assert\NotNull(groups: ['eleveur-de-chien'])]
     #[Assert\Valid(groups: ['eleveur-de-chien'])]
+    #[Assert\NotBlank(message: 'Vous devez choisir la race que vous élevez')]
     #[ORM\ManyToOne(inversedBy: 'breeders')]
     #[ORM\JoinColumn(nullable: true)]
     private ?RaceDog $raceDog = null;
@@ -62,9 +65,34 @@ class Breeder
     #[ORM\OneToMany(targetEntity: Pet::class, mappedBy: 'breeder', orphanRemoval: true)]
     private Collection $pets;
 
+    #[ORM\ManyToOne(inversedBy: 'breeders', cascade: ['persist', 'persist'])]
+    #[Assert\Valid(groups: ['eleveur-de-chien', 'eleveur-de-chat'])]
+    private ?WebSite $webSite = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    // On utilise NotBlank (si tu veux que ce soit obligatoire) ou rien du tout
+    #[Assert\NotBlank(groups: ['presentation_update'], message: 'La présentation ne peut pas être vide')]
+    private ?string $presentation = null;
+
     public function __construct()
     {
         $this->pets = new ArrayCollection();
+    }
+
+    public function getWebSiteUrl(): string
+    {
+        if ($this->webSite === null) {
+            return 'Non renseigné';
+        }
+        return (string) $this->webSite->getUrl();
+    }
+
+    public function getTextPresentation(): string
+    {
+        if ($this->presentation === null) {
+            return 'Vous n\'avez pas encore présenter votre élevage';
+        }
+        return (string) $this->getPresentation();
     }
 
     public function getId(): ?int
@@ -168,6 +196,30 @@ class Breeder
                 $pet->setBreeder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebSite(): ?WebSite
+    {
+        return $this->webSite;
+    }
+
+    public function setWebSite(?WebSite $webSite): static
+    {
+        $this->webSite = $webSite;
+
+        return $this;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(?string $presentation): static
+    {
+        $this->presentation = $presentation;
 
         return $this;
     }

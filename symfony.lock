@@ -47,6 +47,9 @@
             "./config/routes/easyadmin.yaml"
         ]
     },
+    "ehyiah/ux-quill": {
+        "version": "3.5.0"
+    },
     "phpunit/phpunit": {
         "version": "12.5",
         "recipe": {

@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    élevage
+    {{breeder.affixe.name}}
+    -
+    {% if breeder.raceDog %}
+        {{breeder.raceDog.race}}
+    {% endif %}
+    {% if breeder.raceCat %}
+        {{breeder.raceCat.race}}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="containerArticle">
+        <h2>{{breeder.affixe.name}}</h2>
+
+        <div class="containerPublicBreeder">
+            <div class="divLeft">
+                <div>
+                    {% if breeder.raceDog %}
+                        <h3>
+                            {{breeder.raceDog.race}}
+                        </h3>
+                    {% endif %}
+                    {% if breeder.raceCat %}
+                        <h3>
+                            {{breeder.raceCat.race}}
+                        </h3>
+                    {% endif %}
+                </div>
+
+                <div class="ql-snow">
+                    <div class="ql-editor">
+                        {{ breeder.presentation|raw }}
+                    </div>
+                </div>
+
+                <div class="containerSection">
+                    <h2>Cheptel</h2>
+                    <div class="containerCardRow">
+                        {% for pet in breeder.pets %}
+                            {% if pet.petGender == 'Mâle' %}
+                                <div class="card">
+                                    <h3>Mâle</h3>
+                                    <div class="icon">
+                                        <span class="male">
+                                            {{ ux_icon('mage:male', {width:"18px", height:"18px"}) }}
+                                        </span>
+                                        {{pet.name}}
+                                        {{pet.affixe.name}}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <div class="containerCardRow">
+                        {% for pet in breeder.pets %}
+                            {% if pet.petGender == "Femelle" %}
+                                <div class="card">
+                                    <h3>Femelle</h3>
+                                    <div class="icon">
+                                        <span class="female">
+                                            {{ ux_icon('mage:female', {width:"18px", height:"18px"}) }}
+                                        </span>
+                                        {{pet.name}}
+                                        {{pet.affixe.name}}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="containerSection">
+                    <h2>Annonce</h2>
+
+                    <div class="containerCardColumn">
+                        <div class="card">
+                            <h3>Titre annonce</h3>
+                            <div class="icon">
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Titre annonce</h3>
+                            <div class="icon">
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Titre annonce</h3>
+                            <div class="icon">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="divRight">
+
+                <div class="containerSectionMenu">
+                    <h2>Contact</h2>
+                    {{breeder.businessPage.address.city}}
+                    {{breeder.businessPage.address.country}}
+                    <ul>
+                        {% for phone in breeder.businessPage.phone %}
+                            <li>{{phone.type}} : {{phone.number}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% if breeder.webSite %}
+                        {{breeder.webSite.url}}
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

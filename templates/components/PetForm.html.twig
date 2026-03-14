@@ -1,0 +1,62 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+    attr: {
+    'data-action': 'live#action:prevent',
+    'data-live-action-param': 'save'
+    }
+    }) }}
+
+    {# --- AFFICHAGE DES ERREURS --- #}
+    {% if not form.vars.valid %}
+        <div class="error">
+            {{ form_errors(form) }}
+            <ul>
+                {% for child in form.children %}
+                    {% if not child.vars.valid %}
+                        {% if child.children|length > 0 %}
+                            {% for subchild in child.children %}
+                                {% for error in subchild.vars.errors %}
+                                    <li>{{ error.message }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            {% for error in child.vars.errors %}
+                                <li>{{ child.vars.label|default(child.vars.name) }}: {{ error.message }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {# --- CHAMPS --- #}
+
+    {% if form.petGender is defined %}
+        {{ form_row(form.petGender) }}
+    {% endif %}
+
+    {% if form.name is defined %}
+        {{ form_row(form.name) }}
+    {% endif %}
+
+    {% if form.icad is defined %}
+        {{ form_row(form.icad) }}
+    {% endif %}
+
+    {% if form.addAffixe is defined %}
+        {{ form_row(form.addAffixe) }}
+    {% endif %}
+
+    {% if form.affixe is defined %}
+        {{ form_row(form.affixe) }}
+    {% endif %}
+
+    {{ form_rest(form) }}
+
+    {% if form.affixe is defined %}
+        <button data-action="live#action" data-live-action-param="save">Ajouter l'animal</button>
+    {% endif %}
+
+    {{ form_end(form) }}
+</div>

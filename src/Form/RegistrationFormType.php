@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class RegistrationFormType extends AbstractType
@@ -77,6 +78,7 @@ class RegistrationFormType extends AbstractType
                 'by_reference' => false,
                 'label' => false,
                 'entry_options' => ['label' => false],
+                'constraints' => [new Assert\Valid()],
                 'row_attr' => ['class' => 'collection'],
                 'attr' => [
                     'data-controller' => 'form-collection'

@@ -10,7 +10,8 @@ use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-#[UniqueEntity(fields: ['street', 'zipCode', 'city', 'country'], message: 'Cette adresse existe déjà.')]
+#[UniqueEntity(fields: ['street', 'zipCode', 'city', 'country'], errorPath: 'street',  message: 'Cette adresse existe déjà.')]
+#[UniqueEntity(fields: ['street', 'zipCode', 'city', 'country', 'user'], errorPath: 'street', message: 'Cette adresse est déjà associé à un utilisateur.')]
 class Address implements Stringable
 {
     #[ORM\Id]
@@ -35,6 +36,10 @@ class Address implements Stringable
      */
     #[ORM\OneToMany(targetEntity: BusinessPage::class, mappedBy: 'address')]
     private Collection $businessPages;
+
+    #[ORM\ManyToOne(inversedBy: 'addresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
 
     public function __construct()
@@ -128,7 +133,19 @@ class Address implements Stringable
 
     public function __toString(): string
     {
-        return $this->street . '<br>' . $this->zipCode . ' ' . $this->city . '<br>' .  $this->country;
+        return $this->street . ' ' . $this->zipCode . ' ' . $this->city . ' ' .  $this->country;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }
